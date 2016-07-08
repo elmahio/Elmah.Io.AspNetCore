@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0-*",
+  "description": "An elmah.io provider for Microsoft.Extensions.Logging",
+  "authors": [ "elmah.io" ],
+  "packOptions": {
+    "tags": [ "Error", "Exception", "Reporting", "Management", "Logging", "ELMAH", "Diagnostics", "Tracing" ],
+    "projectUrl": "https://github.com/elmahio/Elmah.Io.Extensions.Logging",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+    "iconUrl": "https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=32"
+  },
+  "dependencies": {
+    "Elmah.Io.Client": "3.0.0-pre-20",
+    "Microsoft.Extensions.Logging.Abstractions": "1.0.0"
+  },
+
+  "frameworks": {
+    "netstandard1.1": {
+      "imports": "dnxcore50"
+    }
+  }
+}
