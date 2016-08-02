@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Elmah.Io.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Elmah.Io.Extensions.Logging.Example
 {
@@ -21,11 +18,6 @@ namespace Elmah.Io.Extensions.Logging.Example
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
-            {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
             Configuration = builder.Build();
         }
 
@@ -37,6 +29,9 @@ namespace Elmah.Io.Extensions.Logging.Example
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            // IMPORTANT: in order to log context variables like cookies etc, you need to register this
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddMvc();
         }
 
@@ -44,22 +39,12 @@ namespace Elmah.Io.Extensions.Logging.Example
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddElmahIo("API_KEY", new Guid("LOG_ID"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
+            var logger = loggerFactory.CreateLogger("mylogger");
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
-            app.UseApplicationInsightsExceptionTelemetry();
+            // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to
+            app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
 
             app.UseStaticFiles();
 
