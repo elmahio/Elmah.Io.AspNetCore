@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Elmah.Io.AspNetCore.Example.Controllers
 {

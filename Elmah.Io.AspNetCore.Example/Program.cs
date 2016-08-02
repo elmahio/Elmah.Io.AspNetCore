@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Elmah.Io.AspNetCore.Example
 {
