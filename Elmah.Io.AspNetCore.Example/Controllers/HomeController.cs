@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Elmah.Io.Extensions.Logging.Example.Controllers
+namespace Elmah.Io.AspNetCore.Example.Controllers
 {
     public class HomeController : Controller
     {

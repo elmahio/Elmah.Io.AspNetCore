@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using System.IO;
 
-namespace Elmah.Io.Extensions.Logging.Example
+namespace Elmah.Io.AspNetCore.Example
 {
     public class Program
     {

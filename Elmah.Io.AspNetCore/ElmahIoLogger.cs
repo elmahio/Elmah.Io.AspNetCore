@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using ExtensionsLogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace Elmah.Io.Extensions.Logging
+namespace Elmah.Io.AspNetCore
 {
     public class ElmahIoLogger : ExtensionsLogger
     {

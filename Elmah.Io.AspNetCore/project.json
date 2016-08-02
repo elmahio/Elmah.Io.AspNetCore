@@ -1,10 +1,10 @@
 {
   "version": "1.0.0-*",
-  "description": "An elmah.io provider for Microsoft.Extensions.Logging",
+  "description": "An elmah.io provider for ASP.NET Core",
   "authors": [ "elmah.io" ],
   "packOptions": {
     "tags": [ "Error", "Exception", "Reporting", "Management", "Logging", "ELMAH", "Diagnostics", "Tracing" ],
-    "projectUrl": "https://github.com/elmahio/Elmah.Io.Extensions.Logging",
+    "projectUrl": "https://github.com/elmahio/Elmah.Io.AspNetCore",
     "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
     "iconUrl": "https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=32"
   },

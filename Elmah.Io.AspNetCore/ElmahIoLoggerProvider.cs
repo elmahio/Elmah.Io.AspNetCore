@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Elmah.Io.Extensions.Logging
+namespace Elmah.Io.AspNetCore
 {
     public class ElmahIoLoggerProvider : ILoggerProvider
     {
