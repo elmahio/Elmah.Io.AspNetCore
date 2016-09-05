@@ -28,10 +28,6 @@ namespace Elmah.Io.AspNetCore.Example
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
-
-            // IMPORTANT: in order to log context variables like cookies etc, you need to register this
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             services.AddMvc();
         }
 
@@ -41,10 +37,8 @@ namespace Elmah.Io.AspNetCore.Example
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            var logger = loggerFactory.CreateLogger("mylogger");
-
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to
-            app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
+            app.UseElmahIo("9d0c0fe1beff4fe3bc01fe154b7ba4cd", new Guid("dda9e648-d5f9-48a0-a044-628d8b72d935"));
 
             app.UseStaticFiles();
 
