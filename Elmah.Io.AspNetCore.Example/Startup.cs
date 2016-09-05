@@ -38,7 +38,7 @@ namespace Elmah.Io.AspNetCore.Example
             loggerFactory.AddDebug();
 
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to
-            app.UseElmahIo("9d0c0fe1beff4fe3bc01fe154b7ba4cd", new Guid("dda9e648-d5f9-48a0-a044-628d8b72d935"));
+            app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
 
             app.UseStaticFiles();
 
