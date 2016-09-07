@@ -22,7 +22,7 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
     "Microsoft.AspNetCore.Session": "1.0.0",
-    "Elmah.Io.AspNetCore": "1.0.0-*"
+    "Elmah.Io.AspNetCore": "1.0.1-*"
   },
 
   "tools": {
