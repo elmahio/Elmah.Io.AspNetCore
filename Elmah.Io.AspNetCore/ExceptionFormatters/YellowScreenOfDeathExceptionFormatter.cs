@@ -33,11 +33,10 @@ namespace Elmah.Io.AspNetCore.ExceptionFormatters
 
         private string ExceptionToString(Exception ex)
         {
-            StringBuilder description = new StringBuilder();
+            var description = new StringBuilder();
             description.AppendFormat("{0}: {1}", ex.GetType().FullName, ex.Message);
-
+            description.Append("\r\n");
             description.Append(ex.StackTrace);
-
             return description.ToString();
         }
     }
