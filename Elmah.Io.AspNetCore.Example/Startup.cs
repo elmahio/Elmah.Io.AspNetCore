@@ -39,7 +39,6 @@ namespace Elmah.Io.AspNetCore.Example
             var logger = loggerFactory.CreateLogger("MyLog");
 
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
-            // To execute some code every time a message is logged and/or fails, comment out the two event handlers.
             app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
 
             if (env.IsDevelopment())
