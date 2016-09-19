@@ -13,20 +13,22 @@ namespace Elmah.Io.AspNetCore
         private readonly RequestDelegate _next;
         private readonly string _apiKey;
         private readonly Guid _logId;
-        private readonly Action<CreateMessage> _onMessage;
-        private readonly Action<CreateMessage, Exception> _onError;
+        private readonly ElmahIoSettings _settings;
 
-        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, msg => { }, (msg, ex) => { })
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
         {
         }
 
-        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, Action<CreateMessage> onMessage, Action<CreateMessage, Exception> onError)
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
         {
+            if (string.IsNullOrWhiteSpace(apiKey)) throw new ArgumentException("Input an API key", nameof(apiKey));
+            if (logId == Guid.Empty) throw new ArgumentException("Input a valid guid as log ID", nameof(logId));
+            if (settings == null) throw new ArgumentNullException(nameof(settings), "Input settings for elmah.io");
+
             _next = next;
             _apiKey = apiKey;
             _logId = logId;
-            _onMessage = onMessage;
-            _onError = onError;
+            _settings = settings;
         }
 
         public async Task Invoke(HttpContext context)
@@ -41,7 +43,7 @@ namespace Elmah.Io.AspNetCore
                 var createMessage = new CreateMessage
                 {
                     DateTime = DateTime.UtcNow,
-                    Detail = exception.ToString(),
+                    Detail = _settings.ExceptionFormatter != null ? _settings.ExceptionFormatter.Format(exception) : exception.ToString(),
                     Type = exception.GetType().Name,
                     Title = exception.Message,
                     Data = exception.ToDataList(),
@@ -56,10 +58,10 @@ namespace Elmah.Io.AspNetCore
                 };
 
                 elmahioApi.Messages.OnMessage += (sender, args) => {
-                    _onMessage?.Invoke(args.Message);
+                    _settings.OnMessage?.Invoke(args.Message);
                 };
                 elmahioApi.Messages.OnMessageFail += (sender, args) => {
-                    _onError?.Invoke(args.Message, args.Error);
+                    _settings.OnError?.Invoke(args.Message, args.Error);
                 };
 
                 try
@@ -68,7 +70,7 @@ namespace Elmah.Io.AspNetCore
                 }
                 catch (Exception e)
                 {
-                    _onError?.Invoke(createMessage, e);
+                    _settings.OnError?.Invoke(createMessage, e);
                     // If there's a Exception while generating the error page, re-throw the original exception.
                 }
 
