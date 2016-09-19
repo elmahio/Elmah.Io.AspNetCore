@@ -40,7 +40,7 @@ namespace Elmah.Io.AspNetCore.Example
 
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
             // To execute some code every time a message is logged and/or fails, comment out the two event handlers.
-            app.UseElmahIo("API_KEY", new Guid("LOG_ID")/*, OnMessage(), OnError(logger)*/);
+            app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
 
             if (env.IsDevelopment())
             {
@@ -61,22 +61,6 @@ namespace Elmah.Io.AspNetCore.Example
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-
-        private static Action<CreateMessage, Exception> OnError(ILogger logger)
-        {
-            return (msg, ex) =>
-            {
-                logger.LogError(1, ex, "Error during logging of message to elmah.io");
-            };
-        }
-
-        private static Action<CreateMessage> OnMessage()
-        {
-            return msg =>
-            {
-                msg.Version = "1.0.0";
-            };
         }
     }
 }
