@@ -62,7 +62,17 @@ namespace Elmah.Io.AspNetCore
                     _onError?.Invoke(args.Message, args.Error);
                 };
 
-                elmahioApi.Messages.CreateAndNotify(_logId.ToString(), createMessage);
+                try
+                {
+                    elmahioApi.Messages.CreateAndNotify(_logId.ToString(), createMessage);
+                }
+                catch (Exception e)
+                {
+                    _onError?.Invoke(createMessage, e);
+                    // If there's a Exception while generating the error page, re-throw the original exception.
+                }
+
+                throw;
             }
         }
 
