@@ -42,6 +42,17 @@ namespace Elmah.Io.AspNetCore.Example
             // To execute some code every time a message is logged and/or fails, comment out the two event handlers.
             app.UseElmahIo("API_KEY", new Guid("LOG_ID")/*, OnMessage(), OnError(logger)*/);
 
+            if (env.IsDevelopment())
+            {
+                // Having the following line in the code, will swallow any exceptions and NOT trigger elmah.io.
+                //app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
