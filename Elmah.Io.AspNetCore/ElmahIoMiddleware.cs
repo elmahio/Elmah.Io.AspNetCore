@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
@@ -14,12 +13,20 @@ namespace Elmah.Io.AspNetCore
         private readonly RequestDelegate _next;
         private readonly string _apiKey;
         private readonly Guid _logId;
+        private readonly Action<CreateMessage> _onMessage;
+        private readonly Action<CreateMessage, Exception> _onError;
 
-        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId)
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, msg => { }, (msg, ex) => { })
+        {
+        }
+
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, Action<CreateMessage> onMessage, Action<CreateMessage, Exception> onError)
         {
             _next = next;
             _apiKey = apiKey;
             _logId = logId;
+            _onMessage = onMessage;
+            _onError = onError;
         }
 
         public async Task Invoke(HttpContext context)
@@ -48,7 +55,14 @@ namespace Elmah.Io.AspNetCore
                     Method = context.Request?.Method,
                 };
 
-                elmahioApi.Messages.Create(_logId.ToString(), createMessage);
+                elmahioApi.Messages.OnMessage += (sender, args) => {
+                    _onMessage?.Invoke(args.Message);
+                };
+                elmahioApi.Messages.OnMessageFail += (sender, args) => {
+                    _onError?.Invoke(args.Message, args.Error);
+                };
+
+                elmahioApi.Messages.CreateAndNotify(_logId.ToString(), createMessage);
             }
         }
 

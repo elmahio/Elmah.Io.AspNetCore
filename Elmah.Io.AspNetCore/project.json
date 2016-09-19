@@ -9,7 +9,7 @@
     "iconUrl": "https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=32"
   },
   "dependencies": {
-    "Elmah.Io.Client": "3.0.0-pre-25",
+    "Elmah.Io.Client": "3.0.0-pre-26",
     "Microsoft.AspNetCore.Http": "1.0.0"
   },
 

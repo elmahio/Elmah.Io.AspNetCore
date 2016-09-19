@@ -1,7 +1,7 @@
 ﻿using System;
+using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,9 +36,11 @@ namespace Elmah.Io.AspNetCore.Example
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            var logger = loggerFactory.CreateLogger("MyLog");
 
-            // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to
-            app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
+            // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
+            // To execute some code every time a message is logged and/or fails, comment out the two event handlers.
+            app.UseElmahIo("API_KEY", new Guid("LOG_ID")/*, OnMessage(), OnError(logger)*/);
 
             app.UseStaticFiles();
 
@@ -48,6 +50,22 @@ namespace Elmah.Io.AspNetCore.Example
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private static Action<CreateMessage, Exception> OnError(ILogger logger)
+        {
+            return (msg, ex) =>
+            {
+                logger.LogError(1, ex, "Error during logging of message to elmah.io");
+            };
+        }
+
+        private static Action<CreateMessage> OnMessage()
+        {
+            return msg =>
+            {
+                msg.Version = "1.0.0";
+            };
         }
     }
 }
