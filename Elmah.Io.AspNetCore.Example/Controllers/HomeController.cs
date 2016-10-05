@@ -13,6 +13,16 @@ namespace Elmah.Io.AspNetCore.Example.Controllers
 
         public IActionResult About()
         {
+            try
+            {
+                var i = 0;
+                var result = 42/i;
+            }
+            catch (DivideByZeroException e)
+            {
+                e.Ship("API_KEY", new Guid("LOG_ID"), HttpContext);
+            }
+
             ViewData["Message"] = "Your application description page.";
 
             return View();

@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Elmah.Io.AspNetCore": "1.0.1-*",
+    "NETStandard.Library": "1.6.0",
+    "NUnit": "3.5.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
