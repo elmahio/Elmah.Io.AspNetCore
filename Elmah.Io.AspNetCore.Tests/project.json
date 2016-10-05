@@ -4,7 +4,7 @@
   "dependencies": {
     "Elmah.Io.AspNetCore": "1.0.1-*",
     "NETStandard.Library": "1.6.0",
-    "NUnit": "3.5.0"
+    "NUnit": "3.4.1"
   },
 
   "frameworks": {
