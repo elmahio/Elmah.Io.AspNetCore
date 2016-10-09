@@ -2,7 +2,7 @@
 
 namespace Elmah.Io.AspNetCore.Extensions
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static string AssertApiKey(this string apiKey)
         {
@@ -11,6 +11,5 @@ namespace Elmah.Io.AspNetCore.Extensions
 
             return apiKey;
         }
-         
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Elmah.Io.AspNetCore.Extensions
 {
-    public static class GuidExtensions
+    internal static class GuidExtensions
     {
         public static Guid AssertLogId(this Guid logId)
         {

@@ -2,7 +2,7 @@
 
 namespace Elmah.Io.AspNetCore.Extensions
 {
-    public static class ElmahIoSettingsExtensions
+    internal static class ElmahIoSettingsExtensions
     {
         public static ElmahIoSettings AssertSettings(this ElmahIoSettings settings)
         {
