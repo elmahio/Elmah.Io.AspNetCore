@@ -18,9 +18,6 @@ namespace Elmah.Io.AspNetCore
 
         public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
         {
-            logId.AssertLogId();
-            settings.AssertSettings();
-
             _next = next;
             _apiKey = apiKey.AssertApiKey();
             _logId = logId.AssertLogId();
