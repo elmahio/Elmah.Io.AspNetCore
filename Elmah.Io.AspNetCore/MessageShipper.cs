@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
@@ -10,12 +12,19 @@ namespace Elmah.Io.AspNetCore
 {
     internal class MessageShipper
     {
+        public static async Task ShipAsync(string apiKey, Guid logId, string title, HttpContext context,
+            ElmahIoSettings settings)
+        {
+            await ShipAsync(apiKey, logId, title, context, settings, null);
+        }
+
         public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings)
         {
             Ship(apiKey, logId, title, context, settings, null);
         }
 
-        public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings, Exception exception)
+        public static async Task ShipAsync(string apiKey, Guid logId, string title, HttpContext context,
+            ElmahIoSettings settings, Exception exception)
         {
             apiKey.AssertApiKey();
             logId.AssertLogId();
@@ -49,13 +58,18 @@ namespace Elmah.Io.AspNetCore
 
             try
             {
-                elmahioApi.Messages.CreateAndNotify(logId.ToString(), createMessage);
+                await elmahioApi.Messages.CreateAndNotifyAsync(logId, createMessage);
             }
             catch (Exception e)
             {
                 settings.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
             }
+        }
+
+        public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings, Exception exception)
+        {
+            Task.Factory.StartNew(s => ShipAsync(apiKey, logId, title, context, settings, exception), null, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
         private static string Detail(Exception exception, ElmahIoSettings settings)
