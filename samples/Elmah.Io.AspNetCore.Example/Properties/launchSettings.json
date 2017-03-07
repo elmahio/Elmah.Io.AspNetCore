@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Elmah.Io.Extensions.Logging.Example": {
+    "Elmah.Io.AspNetCore.Example": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "http://localhost:5000",

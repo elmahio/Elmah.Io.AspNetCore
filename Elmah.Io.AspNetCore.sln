@@ -3,11 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore", "Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.xproj", "{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9EC1066-4F47-4310-9553-1298325321D8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore.Example", "Elmah.Io.AspNetCore.Example\Elmah.Io.AspNetCore.Example.xproj", "{F6EF594B-4F6F-42DC-8BF7-073B551E089E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore.Tests", "Elmah.Io.AspNetCore.Tests\Elmah.Io.AspNetCore.Tests.xproj", "{CBC3E1AC-9DE1-4241-867D-BDF93B323F6A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E0D4A60F-5411-4587-A085-D41117F83905}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore", "src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.xproj", "{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore.Example", "samples\Elmah.Io.AspNetCore.Example\Elmah.Io.AspNetCore.Example.xproj", "{F6EF594B-4F6F-42DC-8BF7-073B551E089E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Elmah.Io.AspNetCore.Tests", "test\Elmah.Io.AspNetCore.Tests\Elmah.Io.AspNetCore.Tests.xproj", "{CBC3E1AC-9DE1-4241-867D-BDF93B323F6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8CA4CF5-0E50-45F6-945E-A899EDE8D03D}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +42,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5} = {B9EC1066-4F47-4310-9553-1298325321D8}
+		{F6EF594B-4F6F-42DC-8BF7-073B551E089E} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
+		{CBC3E1AC-9DE1-4241-867D-BDF93B323F6A} = {E0D4A60F-5411-4587-A085-D41117F83905}
 	EndGlobalSection
 EndGlobal

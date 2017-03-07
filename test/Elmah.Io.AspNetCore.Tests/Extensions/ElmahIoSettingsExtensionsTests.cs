@@ -11,7 +11,7 @@ namespace Elmah.Io.AspNetCore.Tests.Extensions
         {
             ElmahIoSettings settings = null;
             // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.Throws<ArgumentException>(() => settings.AssertSettings());
+            Assert.Throws<ArgumentNullException>(() => settings.AssertSettings());
         }
 
         [Test]

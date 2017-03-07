@@ -29,9 +29,8 @@ namespace Elmah.Io.AspNetCore
             try
             {
                 await _next.Invoke(context);
-                if (context.Response.StatusCode >= 400)
+                if (ShoudLogStatusCode(context))
                 {
-                    // This is a catch all to also catch errors like 400, 404 and even 500 which not throws an exception.
                     await MessageShipper.ShipAsync(_apiKey, _logId, "Unsuccessful status code in response", context, _settings);
                 }
             }
@@ -40,6 +39,12 @@ namespace Elmah.Io.AspNetCore
                 await exception.ShipAsync(_apiKey, _logId, context, _settings);
                 throw;
             }
+        }
+
+        private bool ShoudLogStatusCode(HttpContext context)
+        {
+            return context.Response != null && _settings.HandledStatusCodesToLog != null &&
+                   _settings.HandledStatusCodesToLog.Contains(context.Response.StatusCode);
         }
     }
 }

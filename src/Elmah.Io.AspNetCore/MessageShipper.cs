@@ -42,7 +42,7 @@ namespace Elmah.Io.AspNetCore
                 Form = Form(context),
                 Hostname = context.Request?.Host.Host,
                 ServerVariables = ServerVariables(context),
-                StatusCode = context.Response?.StatusCode,
+                StatusCode = StatusCode(exception, context),
                 Url = context.Request?.Path.Value,
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
@@ -65,6 +65,19 @@ namespace Elmah.Io.AspNetCore
                 settings.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
             }
+        }
+
+        private static int? StatusCode(Exception exception, HttpContext context)
+        {
+            if (exception != null)
+            {
+                // If an exception is thrown, but the response has a successful status code,
+                // it is because the elmah.io middleware are running before the correct
+                // status code is assigned the response. Override it with 500.
+                return context.Response?.StatusCode < 400 ? 500 : context.Response?.StatusCode;
+            }
+
+            return context.Response?.StatusCode;
         }
 
         public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings, Exception exception)

@@ -17,13 +17,50 @@ Configure the elmah.io provider through code:
 ```csharp
 public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 {
+    app.UseExceptionHandler("/Home/Error");
     ...
     app.UseElmahIo("API_KEY", new Guid("LOG_ID"));
     ...
 }
 ```
 
-In the example we tell ASP.NET Core to use elmah.io with the specified `API_KEY` and `LOG_ID`. You will need to replace `API_KEY` with your elmah.io API key (found on your profile) as well as the log ID of the elmah.io log you want to log to.
+In the example we tell ASP.NET Core to use elmah.io with the specified `API_KEY` and `LOG_ID`. You will need to replace `API_KEY` with your elmah.io API key (found on your profile) as well as the log ID of the elmah.io log you want to log to. It is important to configure the elmah.io middleware after adding other exception handling middleware (like `UseExceptionHandler`).
+
+As default, uncaught exceptions (500's) and 404's are logged automatically. Let's say you have a controller returning a Bad Request and want to log that as well. Since returning a 400 from a controller doesn't trigger an exception, you will need to configure this status code:
+
+```csharp
+public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+{
+    ...
+    var settings = new ElmahIoSettings();
+    settings.HandledStatusCodesToLog.Add(400);
+    app.UseElmahIo("API_KEY", new Guid("LOG_ID"), settings);
+    ...
+}
+```
+
+By adding the status code `400`, the elmah.io client will log any responses with this status code as well. Notice that you will not need to configure this, if your controller action set a status code of 400 and throw an exception.
+
+To decorate errors or handle elmah.io downtime, you can use two events found on the `ElmahIoSettings` class:
+
+```csharp
+public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+{
+    ...
+    var settings = new ElmahIoSettings
+    {
+        OnMessage = msg =>
+        {
+            msg.Version = "1.0.0";
+        },
+        OnError = (msg, ex) =>
+        {
+            // Do something about the failing message
+        }
+    };
+    ...
+}
+```
 
 ## Usage
 The logger automatically logs all errors happening in your web application.
@@ -34,4 +71,19 @@ If you need to log messages and errors to elmah.io manually, you have a range of
 ```csharp
 var elmahioApi = ElmahioAPI.Create("API_KEY");
 elmahioApi.Messages.Error(new Guid("LOG_ID"), exception, "An error happened");
+```
+
+or using the extension methods on `Exception`:
+
+```csharp
+try
+{
+    var i = 0;
+    var result = 42/i;
+}
+catch (DivideByZeroException e)
+{
+    e.Ship("API_KEY", new Guid("LOG_ID"), HttpContext);
+}
+
 ```

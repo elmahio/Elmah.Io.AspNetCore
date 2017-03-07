@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Elmah.Io.Extensions.Logging.Example</title>
+    <title>@ViewData["Title"] -Elmah.Io.AspNetCore.Example</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -15,7 +15,6 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -27,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Elmah.Io.Extensions.Logging.Example</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Elmah.Io.AspNetCore.Example</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -42,7 +41,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2016 - Elmah.Io.Extensions.Logging.Example</p>
+            <p>&copy; 2016 - Elmah.Io.AspNetCore.Example</p>
         </footer>
     </div>
 

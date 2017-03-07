@@ -36,6 +36,8 @@ namespace Elmah.Io.AspNetCore.Example
             loggerFactory.AddDebug();
             var logger = loggerFactory.CreateLogger("MyLog");
 
+            app.UseExceptionHandler("/Home/Error");
+            
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
             app.UseElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
             {
@@ -44,17 +46,6 @@ namespace Elmah.Io.AspNetCore.Example
                     msg.Version = "1.0.0";
                 }
             });
-
-            if (env.IsDevelopment())
-            {
-                // Having the following line in the code, will swallow any exceptions and NOT trigger elmah.io.
-                //app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
 
             app.UseStaticFiles();
 
