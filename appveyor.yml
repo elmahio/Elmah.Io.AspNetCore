@@ -1,0 +1,48 @@
+version: 3.1.{build}-pre
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+before_build:
+- ps: >-
+    dotnet restore
+
+
+    Push-Location src\Elmah.Io.AspNetCore
+
+
+    Write-Host "Setting version to $env:APPVEYOR_BUILD_VERSION"
+
+    (Get-Content project.json).replace("1.0.0-*", $env:APPVEYOR_BUILD_VERSION) | Set-Content project.json
+
+
+    Pop-Location
+build:
+  verbosity: minimal
+before_package:
+- ps: >-
+    Push-Location test\Elmah.Io.AspNetCore.Tests
+
+
+    dotnet test
+
+
+    Pop-Location
+after_build:
+- ps: >-
+    Push-Location src\Elmah.Io.AspNetCore
+
+
+    dotnet pack --output artifacts
+
+
+    Pop-Location
+test: off
+artifacts:
+- path: '**\*.nupkg'
+deploy:
+- provider: NuGet
+  api_key:
+    secure: F5CTc3/bSmMHKRW3d4pOSQu5roNE4RNb4wspqcdWDt8nCd3x2hR7nDAYEywofdn+
