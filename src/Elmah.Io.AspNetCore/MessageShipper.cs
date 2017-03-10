@@ -46,6 +46,7 @@ namespace Elmah.Io.AspNetCore
                 Url = context.Request?.Path.Value,
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
+                Severity = Severity(exception, context),
             };
 
             elmahioApi.Messages.OnMessage += (sender, args) => {
@@ -65,6 +66,17 @@ namespace Elmah.Io.AspNetCore
                 settings.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
             }
+        }
+
+        private static string Severity(Exception exception, HttpContext context)
+        {
+            var statusCode = StatusCode(exception, context);
+
+            if (statusCode.HasValue && statusCode >= 400 && statusCode < 500) return Client.Severity.Warning.ToString();
+            if (statusCode.HasValue && statusCode >= 500) return Client.Severity.Error.ToString();
+            if (exception != null) return Client.Severity.Error.ToString();
+
+            return null; // Let elmah.io decide when receiving the message
         }
 
         private static int? StatusCode(Exception exception, HttpContext context)
