@@ -30,7 +30,6 @@ namespace Elmah.Io.AspNetCore
             logId.AssertLogId();
             settings.AssertSettings();
 
-            var elmahioApi = ElmahioAPI.Create(apiKey);
             var createMessage = new CreateMessage
             {
                 DateTime = DateTime.UtcNow,
@@ -48,6 +47,13 @@ namespace Elmah.Io.AspNetCore
                 Method = context.Request?.Method,
                 Severity = Severity(exception, context),
             };
+
+            if (settings.OnFilter != null && settings.OnFilter(createMessage))
+            {
+                return;
+            }
+
+            var elmahioApi = ElmahioAPI.Create(apiKey);
 
             elmahioApi.Messages.OnMessage += (sender, args) => {
                 settings.OnMessage?.Invoke(args.Message);

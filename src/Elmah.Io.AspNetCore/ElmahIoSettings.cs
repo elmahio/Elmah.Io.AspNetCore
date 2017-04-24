@@ -15,6 +15,7 @@ namespace Elmah.Io.AspNetCore
 
         public Action<CreateMessage> OnMessage { get; set; }
         public Action<CreateMessage, Exception> OnError { get; set; }
+        public Func<CreateMessage, bool> OnFilter { get; set; }
         public IExceptionFormatter ExceptionFormatter { get; set; }
         public List<int> HandledStatusCodesToLog { get; set; }
     }
