@@ -38,7 +38,6 @@ namespace Elmah.Io.AspNetCore.Example
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
