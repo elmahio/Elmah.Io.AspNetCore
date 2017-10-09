@@ -1,39 +1,18 @@
-version: 3.2.{build}-pre
+version: 3.2.{build}
+branches:
+  only:
+  - master
 image: Visual Studio 2017
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
 before_build:
-- ps: >-
-    dotnet restore
-
-    Push-Location src\Elmah.Io.AspNetCore
-
-    Write-Host "Setting version to $env:APPVEYOR_BUILD_VERSION"
-
-    (Get-Content Elmah.Io.AspNetCore.csproj).replace("<Version>1.0.0</Version>", "<Version>$env:APPVEYOR_BUILD_VERSION</Version>") | Set-Content Elmah.Io.AspNetCore.csproj
-
-    Pop-Location
+- ps: dotnet restore
 build:
   verbosity: minimal
-before_package:
-- ps: >-
-    Push-Location test\Elmah.Io.AspNetCore.Tests
-
-    dotnet test
-
-    Pop-Location
 after_build:
-- ps: >-
-    Push-Location src\Elmah.Io.AspNetCore
-
-    dotnet pack --output artifacts
-
-    Pop-Location
-test: off
+- ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj --output artifacts
+test:
+  assemblies:
+    only:
+    - test\Elmah.Io.AspNetCore.Tests\bin\**\Elmah.Io.AspNetCore.Tests.dll
 artifacts:
 - path: '**\*.nupkg'
 deploy:

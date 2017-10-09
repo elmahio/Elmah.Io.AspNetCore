@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="3.0.41-pre" />
+    <PackageReference Include="Elmah.Io.Client" Version="[3.0.46,4)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="1.1.1" />
   </ItemGroup>
 
