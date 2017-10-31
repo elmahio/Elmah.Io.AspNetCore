@@ -48,6 +48,8 @@ namespace Elmah.Io.AspNetCore
                 Severity = Severity(exception, context),
             };
 
+            TrySetUser(context, createMessage);
+
             if (settings.OnFilter != null && settings.OnFilter(createMessage))
             {
                 return;
@@ -71,6 +73,23 @@ namespace Elmah.Io.AspNetCore
             {
                 settings.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
+            }
+        }
+
+        private static void TrySetUser(HttpContext context, CreateMessage createMessage)
+        {
+            try
+            {
+                createMessage.User = context?.User?.Identity?.Name;
+            }
+            catch
+            {
+                // ASP.NET Core < 2.0 is broken. When creating a new ASP.NET Core 1.x project targeting .NET Framework
+                // .NET throws a runtime error complaining about missing System.Security.Claims. For this reason,
+                // we don't support setting the User property for 1.x projects targeting .NET Framework.
+                // Check out the following GitHub issues for details:
+                // - https://github.com/dotnet/standard/issues/410
+                // - https://github.com/dotnet/sdk/issues/901
             }
         }
 
