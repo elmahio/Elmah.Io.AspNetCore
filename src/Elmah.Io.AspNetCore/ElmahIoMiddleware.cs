@@ -8,9 +8,10 @@ namespace Elmah.Io.AspNetCore
     public class ElmahIoMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly string _apiKey;
-        private readonly Guid _logId;
         private readonly ElmahIoSettings _settings;
+
+        public static string ApiKey { get; private set; }
+        public static Guid LogId { get; private set; }
 
         public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
         {
@@ -19,8 +20,8 @@ namespace Elmah.Io.AspNetCore
         public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
         {
             _next = next;
-            _apiKey = apiKey.AssertApiKey();
-            _logId = logId.AssertLogId();
+            ApiKey = apiKey.AssertApiKey();
+            LogId = logId.AssertLogId();
             _settings = settings.AssertSettings();
         }
 
@@ -31,12 +32,12 @@ namespace Elmah.Io.AspNetCore
                 await _next.Invoke(context);
                 if (ShoudLogStatusCode(context))
                 {
-                    await MessageShipper.ShipAsync(_apiKey, _logId, "Unsuccessful status code in response", context, _settings);
+                    await MessageShipper.ShipAsync(ApiKey, LogId, "Unsuccessful status code in response", context, _settings);
                 }
             }
             catch (Exception exception)
             {
-                await exception.ShipAsync(_apiKey, _logId, context, _settings);
+                await exception.ShipAsync(ApiKey, LogId, context, _settings);
                 throw;
             }
         }

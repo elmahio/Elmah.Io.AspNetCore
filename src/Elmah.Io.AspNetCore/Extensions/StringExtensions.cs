@@ -11,5 +11,13 @@ namespace Elmah.Io.AspNetCore.Extensions
 
             return apiKey;
         }
+
+        public static string AssertApiKeyInMiddleware(this string apiKey)
+        {
+            if (string.IsNullOrWhiteSpace(apiKey))
+                throw new ArgumentNullException(nameof(apiKey), "API key not initialized through elmah.io middleware");
+
+            return apiKey;
+        }
     }
 }
