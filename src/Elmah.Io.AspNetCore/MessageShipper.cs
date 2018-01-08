@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Elmah.Io.AspNetCore.Extensions;
@@ -55,9 +56,14 @@ namespace Elmah.Io.AspNetCore
                 return;
             }
 
-            var elmahioApi = ElmahioAPI.Create(apiKey);
+            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(apiKey), new HttpClientHandler
+            {
+                UseProxy = settings.WebProxy != null,
+                Proxy = settings.WebProxy,
+            });
 
-            elmahioApi.Messages.OnMessage += (sender, args) => {
+            elmahioApi.Messages.OnMessage += (sender, args) =>
+            {
                 settings.OnMessage?.Invoke(args.Message);
             };
             elmahioApi.Messages.OnMessageFail += (sender, args) =>

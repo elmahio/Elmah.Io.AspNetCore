@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,10 +39,14 @@ namespace Elmah.Io.AspNetCore2.Example
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
             app.UseElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
             {
-                OnMessage = msg =>
-                {
-                    msg.Version = "2.0.0";
-                }
+                // Remove comment on the following lines to decorate all messages with a version number.
+                //OnMessage = msg =>
+                //{
+                //    msg.Version = "2.0.0";
+                //},
+
+                // Remove comment on the following line to log through a proxy (in this case Fiddler).
+                //WebProxy = new WebProxy("localhost", 8888)
             });
 
             app.UseStaticFiles();

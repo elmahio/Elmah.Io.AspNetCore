@@ -12,6 +12,7 @@ namespace Elmah.Io.AspNetCore2.NetFrameworkExample.Controllers
     {
         public IActionResult Index()
         {
+            throw new Exception();
             return View();
         }
 
