@@ -29,6 +29,13 @@ namespace Elmah.Io.AspNetCore.NetFrameworkExample
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
+            {
+                OnMessage = msg =>
+                {
+                    msg.Version = "1.0.0";
+                }
+            });
             services.AddMvc();
         }
 
@@ -49,13 +56,7 @@ namespace Elmah.Io.AspNetCore.NetFrameworkExample
             }
 
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
-            app.UseElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
-            {
-                OnMessage = msg =>
-                {
-                    msg.Version = "1.0.0";
-                }
-            });
+            app.UseElmahIo();
 
             app.UseStaticFiles();
 

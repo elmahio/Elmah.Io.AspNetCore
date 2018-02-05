@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Elmah.Io.AspNetCore.Extensions;
@@ -18,26 +19,9 @@ namespace Elmah.Io.AspNetCore
             await ShipAsync(apiKey, logId, title, context, settings, null);
         }
 
-        public static async Task ShipAsync(string title, HttpContext context,
-            ElmahIoSettings settings)
-        {
-            await ShipAsync(ElmahIoMiddleware.ApiKey.AssertApiKeyInMiddleware(), ElmahIoMiddleware.LogId.AssertLogIdInMiddleware(), title, context, settings, null);
-        }
-
         public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings)
         {
             Ship(apiKey, logId, title, context, settings, null);
-        }
-
-        public static void Ship(string title, HttpContext context, ElmahIoSettings settings)
-        {
-            Ship(ElmahIoMiddleware.ApiKey.AssertApiKeyInMiddleware(), ElmahIoMiddleware.LogId.AssertLogIdInMiddleware(), title, context, settings, null);
-        }
-
-        public static async Task ShipAsync(string title, HttpContext context,
-            ElmahIoSettings settings, Exception exception)
-        {
-            await ShipAsync(ElmahIoMiddleware.ApiKey.AssertApiKeyInMiddleware(), ElmahIoMiddleware.LogId.AssertLogIdInMiddleware(), title, context, settings, exception);
         }
 
         public static async Task ShipAsync(string apiKey, Guid logId, string title, HttpContext context,
@@ -72,9 +56,10 @@ namespace Elmah.Io.AspNetCore
                 return;
             }
 
-            var elmahioApi = ElmahioAPI.Create(apiKey);
+            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(apiKey));
 
-            elmahioApi.Messages.OnMessage += (sender, args) => {
+            elmahioApi.Messages.OnMessage += (sender, args) =>
+            {
                 settings.OnMessage?.Invoke(args.Message);
             };
             elmahioApi.Messages.OnMessageFail += (sender, args) =>
@@ -137,11 +122,6 @@ namespace Elmah.Io.AspNetCore
         public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings, Exception exception)
         {
             Task.Factory.StartNew(s => ShipAsync(apiKey, logId, title, context, settings, exception), null, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-        }
-
-        public static void Ship(string title, HttpContext context, ElmahIoSettings settings, Exception exception)
-        {
-            Ship(ElmahIoMiddleware.ApiKey.AssertApiKeyInMiddleware(), ElmahIoMiddleware.LogId.AssertLogIdInMiddleware(), title, context, settings, exception);
         }
 
         private static string Detail(Exception exception, ElmahIoSettings settings)
