@@ -11,33 +11,35 @@ namespace Elmah.Io.AspNetCore
         private readonly RequestDelegate _next;
         private readonly ElmahIoOptions _options;
 
-        //[Obsolete]
-        //public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
-        //{
-        //}
-
-        //[Obsolete]
-        //public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
-        //{
-        //    _next = next;
-        //    _options = new ElmahIoOptions
-        //    {
-        //        ApiKey = apiKey,
-        //        LogId = logId,
-        //        ExceptionFormatter = settings.ExceptionFormatter,
-        //        HandledStatusCodesToLog = settings.HandledStatusCodesToLog,
-        //        OnError = settings.OnError,
-        //        OnFilter = settings.OnFilter,
-        //        OnMessage = settings.OnMessage,
-        //    };
-        //}
-
         public ElmahIoMiddleware(RequestDelegate next, IOptions<ElmahIoOptions> options)
         {
             _next = next;
             _options = options.Value;
             _options.ApiKey.AssertApiKey();
             _options.LogId.AssertLogId();
+        }
+
+        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
+        {
+        }
+
+        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
+        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
+        {
+            _next = next;
+            apiKey.AssertApiKey();
+            logId.AssertLogId();
+            _options = new ElmahIoOptions
+            {
+                ApiKey = apiKey,
+                LogId = logId,
+                ExceptionFormatter = settings.ExceptionFormatter,
+                HandledStatusCodesToLog = settings.HandledStatusCodesToLog,
+                OnError = settings.OnError,
+                OnFilter = settings.OnFilter,
+                OnMessage = settings.OnMessage,
+            };
         }
 
         public async Task Invoke(HttpContext context)
