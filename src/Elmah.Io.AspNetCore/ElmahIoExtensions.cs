@@ -1,6 +1,8 @@
 ﻿using System;
+using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -23,15 +25,9 @@ namespace Elmah.Io.AspNetCore
             return app.UseMiddleware<ElmahIoMiddleware>();
         }
 
-        public static IServiceCollection AddElmahIo(this IServiceCollection services, string apiKey, Guid logId)
+        public static IServiceCollection AddElmahIo(this IServiceCollection services, Action<ElmahIoOptions> configureOptions)
         {
-            return services.AddElmahIo(apiKey, logId, new ElmahIoSettings());
-        }
-
-        public static IServiceCollection AddElmahIo(this IServiceCollection services, string apiKey, Guid logId, ElmahIoSettings settings)
-        {
-            var config = new ElmahIoConfiguration(apiKey, logId, settings);
-            services.AddSingleton(config);
+            services.Configure(configureOptions);
             return services;
         }
     }

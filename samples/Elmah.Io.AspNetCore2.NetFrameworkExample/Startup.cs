@@ -22,13 +22,13 @@ namespace Elmah.Io.AspNetCore2.NetFrameworkExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
-            {
-                OnMessage = msg =>
-                {
-                    msg.Version = "2.0.0";
-                }
-            });
+            //services.AddElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
+            //{
+            //    OnMessage = msg =>
+            //    {
+            //        msg.Version = "2.0.0";
+            //    }
+            //});
             services.AddMvc();
         }
 

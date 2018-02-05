@@ -26,13 +26,13 @@ namespace Elmah.Io.AspNetCore.Example
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
-            {
-                OnMessage = msg =>
-                {
-                    msg.Version = "1.0.0";
-                }
-            });
+            //services.AddElmahIo("API_KEY", new Guid("LOG_ID"), new ElmahIoSettings
+            //{
+            //    OnMessage = msg =>
+            //    {
+            //        msg.Version = "1.0.0";
+            //    }
+            //});
             services.AddMvc();
         }
 
