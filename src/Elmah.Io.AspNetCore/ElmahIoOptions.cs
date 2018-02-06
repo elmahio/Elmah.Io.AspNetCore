@@ -2,6 +2,7 @@
 using Elmah.Io.Client.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -27,5 +28,6 @@ namespace Elmah.Io.AspNetCore
 
         public List<int> HandledStatusCodesToLog { get; set; }
 
+        public IWebProxy WebProxy { get; set; }
     }
 }

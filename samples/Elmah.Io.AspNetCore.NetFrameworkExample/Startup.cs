@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Elmah.Io.AspNetCore;
 
 namespace Elmah.Io.AspNetCore.NetFrameworkExample
 {
@@ -33,11 +29,15 @@ namespace Elmah.Io.AspNetCore.NetFrameworkExample
             {
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
+
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
                 //{
                 //    msg.Version = "1.0.0";
                 //};
+
+                // Remove comment on the following line to log through a proxy (in this case Fiddler).
+                //options.WebProxy = new WebProxy("localhost", 8888);
             });
 
             // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.

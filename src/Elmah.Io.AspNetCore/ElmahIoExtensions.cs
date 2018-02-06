@@ -1,8 +1,6 @@
 ﻿using System;
-using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {

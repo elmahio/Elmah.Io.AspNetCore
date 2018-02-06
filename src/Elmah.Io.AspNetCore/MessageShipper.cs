@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
@@ -37,7 +38,11 @@ namespace Elmah.Io.AspNetCore
                 return;
             }
 
-            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey));
+            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), new HttpClientHandler
+            {
+                UseProxy = options.WebProxy != null,
+                Proxy = options.WebProxy,
+            });
 
             elmahioApi.Messages.OnMessage += (sender, args) =>
             {

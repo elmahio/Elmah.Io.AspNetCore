@@ -30,11 +30,15 @@ namespace Elmah.Io.AspNetCore.Example
             {
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
+
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
                 //{
                 //    msg.Version = "1.0.0";
                 //};
+
+                // Remove comment on the following line to log through a proxy (in this case Fiddler).
+                //options.WebProxy = new WebProxy("localhost", 8888);
             });
 
             // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.

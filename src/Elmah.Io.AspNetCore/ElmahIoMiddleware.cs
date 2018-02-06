@@ -30,6 +30,7 @@ namespace Elmah.Io.AspNetCore
             _next = next;
             apiKey.AssertApiKey();
             logId.AssertLogId();
+            settings.AssertSettings();
             _options = new ElmahIoOptions
             {
                 ApiKey = apiKey,
@@ -39,6 +40,7 @@ namespace Elmah.Io.AspNetCore
                 OnError = settings.OnError,
                 OnFilter = settings.OnFilter,
                 OnMessage = settings.OnMessage,
+                WebProxy = settings.WebProxy,
             };
         }
 

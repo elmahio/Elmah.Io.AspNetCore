@@ -8,7 +8,6 @@ namespace Elmah.Io.AspNetCore.Example.Controllers
         public IActionResult Index()
         {
             throw new Exception("some bug yo");
-            //return View();
         }
 
         public IActionResult About()
