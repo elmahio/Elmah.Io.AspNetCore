@@ -23,15 +23,15 @@ namespace Elmah.Io.AspNetCore2.Example
         public void ConfigureServices(IServiceCollection services)
         {
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
-            services.AddElmahIo(options =>
+            services.AddElmahIo(new ElmahIoOptions
             {
-                options.ApiKey = "API_KEY";
-                options.LogId = new Guid("LOG_ID");
+                ApiKey = "API_KEY",
+                LogId = new Guid("LOG_ID"),
                 // Add event handlers etc. like this:
-                //options.OnMessage = msg =>
+                //OnMessage = msg =>
                 //{
                 //    msg.Version = "2.0.0";
-                //};
+                //},
             });
 
             // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo:
