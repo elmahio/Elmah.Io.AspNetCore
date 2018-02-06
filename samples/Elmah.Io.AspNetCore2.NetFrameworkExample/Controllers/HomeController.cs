@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Elmah.Io.AspNetCore2.NetFrameworkExample.Models;
 
@@ -12,12 +10,21 @@ namespace Elmah.Io.AspNetCore2.NetFrameworkExample.Controllers
     {
         public IActionResult Index()
         {
-            throw new Exception();
-            return View();
+            throw new Exception("Do you know what happened to the neanderthals, Bernard? We ate them.");
         }
 
         public IActionResult About()
         {
+            try
+            {
+                var i = 0;
+                var result = 42 / i;
+            }
+            catch (DivideByZeroException e)
+            {
+                e.Ship(HttpContext);
+            }
+
             ViewData["Message"] = "Your application description page.";
 
             return View();

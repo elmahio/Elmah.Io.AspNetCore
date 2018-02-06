@@ -8,7 +8,6 @@ namespace Elmah.Io.AspNetCore.Example.Controllers
         public IActionResult Index()
         {
             throw new Exception("some bug yo");
-            //return View();
         }
 
         public IActionResult About()
@@ -20,7 +19,7 @@ namespace Elmah.Io.AspNetCore.Example.Controllers
             }
             catch (DivideByZeroException e)
             {
-                e.Ship("API_KEY", new Guid("LOG_ID"), HttpContext);
+                e.Ship(HttpContext);
             }
 
             ViewData["Message"] = "Your application description page.";

@@ -2,26 +2,46 @@
 using System.Threading.Tasks;
 using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {
     public class ElmahIoMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly string _apiKey;
-        private readonly Guid _logId;
-        private readonly ElmahIoSettings _settings;
+        private readonly ElmahIoOptions _options;
 
+        public ElmahIoMiddleware(RequestDelegate next, IOptions<ElmahIoOptions> options)
+        {
+            _next = next;
+            _options = options.Value;
+            _options.ApiKey.AssertApiKey();
+            _options.LogId.AssertLogId();
+        }
+
+        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
         public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
         {
         }
 
+        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
         public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
         {
             _next = next;
-            _apiKey = apiKey.AssertApiKey();
-            _logId = logId.AssertLogId();
-            _settings = settings.AssertSettings();
+            apiKey.AssertApiKey();
+            logId.AssertLogId();
+            settings.AssertSettings();
+            _options = new ElmahIoOptions
+            {
+                ApiKey = apiKey,
+                LogId = logId,
+                ExceptionFormatter = settings.ExceptionFormatter,
+                HandledStatusCodesToLog = settings.HandledStatusCodesToLog,
+                OnError = settings.OnError,
+                OnFilter = settings.OnFilter,
+                OnMessage = settings.OnMessage,
+                WebProxy = settings.WebProxy,
+            };
         }
 
         public async Task Invoke(HttpContext context)
@@ -31,20 +51,20 @@ namespace Elmah.Io.AspNetCore
                 await _next.Invoke(context);
                 if (ShoudLogStatusCode(context))
                 {
-                    await MessageShipper.ShipAsync(_apiKey, _logId, "Unsuccessful status code in response", context, _settings);
+                    await MessageShipper.ShipAsync(null, "Unsuccessful status code in response", context, _options);
                 }
             }
             catch (Exception exception)
             {
-                await exception.ShipAsync(_apiKey, _logId, context, _settings);
+                await MessageShipper.ShipAsync(exception, exception.Message, context, _options);
                 throw;
             }
         }
 
         private bool ShoudLogStatusCode(HttpContext context)
         {
-            return context.Response != null && _settings.HandledStatusCodesToLog != null &&
-                   _settings.HandledStatusCodesToLog.Contains(context.Response.StatusCode);
+            return context.Response != null && _options.HandledStatusCodesToLog != null &&
+                   _options.HandledStatusCodesToLog.Contains(context.Response.StatusCode);
         }
     }
 }

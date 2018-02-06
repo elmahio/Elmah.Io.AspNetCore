@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,28 +11,12 @@ namespace Elmah.Io.AspNetCore
 {
     internal class MessageShipper
     {
-        public static async Task ShipAsync(string apiKey, Guid logId, string title, HttpContext context,
-            ElmahIoSettings settings)
+        public static async Task ShipAsync(Exception exception, string title, HttpContext context, ElmahIoOptions options)
         {
-            await ShipAsync(apiKey, logId, title, context, settings, null);
-        }
-
-        public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings)
-        {
-            Ship(apiKey, logId, title, context, settings, null);
-        }
-
-        public static async Task ShipAsync(string apiKey, Guid logId, string title, HttpContext context,
-            ElmahIoSettings settings, Exception exception)
-        {
-            apiKey.AssertApiKey();
-            logId.AssertLogId();
-            settings.AssertSettings();
-
             var createMessage = new CreateMessage
             {
                 DateTime = DateTime.UtcNow,
-                Detail = Detail(exception, settings),
+                Detail = Detail(exception, options),
                 Type = exception?.GetType().Name,
                 Title = title,
                 Data = exception?.ToDataList(),
@@ -51,33 +33,33 @@ namespace Elmah.Io.AspNetCore
 
             TrySetUser(context, createMessage);
 
-            if (settings.OnFilter != null && settings.OnFilter(createMessage))
+            if (options.OnFilter != null && options.OnFilter(createMessage))
             {
                 return;
             }
 
-            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(apiKey), new HttpClientHandler
+            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), new HttpClientHandler
             {
-                UseProxy = settings.WebProxy != null,
-                Proxy = settings.WebProxy,
+                UseProxy = options.WebProxy != null,
+                Proxy = options.WebProxy,
             });
 
             elmahioApi.Messages.OnMessage += (sender, args) =>
             {
-                settings.OnMessage?.Invoke(args.Message);
+                options.OnMessage?.Invoke(args.Message);
             };
             elmahioApi.Messages.OnMessageFail += (sender, args) =>
             {
-                settings.OnError?.Invoke(args.Message, args.Error);
+                options.OnError?.Invoke(args.Message, args.Error);
             };
 
             try
             {
-                await elmahioApi.Messages.CreateAndNotifyAsync(logId, createMessage);
+                await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage);
             }
             catch (Exception e)
             {
-                settings.OnError?.Invoke(createMessage, e);
+                options.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
             }
         }
@@ -123,16 +105,11 @@ namespace Elmah.Io.AspNetCore
             return context.Response?.StatusCode;
         }
 
-        public static void Ship(string apiKey, Guid logId, string title, HttpContext context, ElmahIoSettings settings, Exception exception)
-        {
-            Task.Factory.StartNew(s => ShipAsync(apiKey, logId, title, context, settings, exception), null, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
-        }
-
-        private static string Detail(Exception exception, ElmahIoSettings settings)
+        private static string Detail(Exception exception, ElmahIoOptions options)
         {
             if (exception == null) return null;
-            return settings.ExceptionFormatter != null
-                ? settings.ExceptionFormatter.Format(exception)
+            return options.ExceptionFormatter != null
+                ? options.ExceptionFormatter.Format(exception)
                 : exception.ToString();
         }
 

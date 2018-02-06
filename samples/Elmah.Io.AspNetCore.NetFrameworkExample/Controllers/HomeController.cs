@@ -23,7 +23,7 @@ namespace Elmah.Io.AspNetCore.NetFrameworkExample.Controllers
             }
             catch (DivideByZeroException e)
             {
-                e.Ship("API_KEY", new Guid("LOG_ID"), HttpContext);
+                e.Ship(HttpContext);
             }
 
             ViewData["Message"] = "Your application description page.";
