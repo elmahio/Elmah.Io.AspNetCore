@@ -25,18 +25,9 @@ namespace Elmah.Io.AspNetCore
             return app.UseMiddleware<ElmahIoMiddleware>();
         }
 
-        public static IServiceCollection AddElmahIo(this IServiceCollection services, ElmahIoOptions options)
+        public static IServiceCollection AddElmahIo(this IServiceCollection services, Action<ElmahIoOptions> configureOptions)
         {
-            services.Configure<ElmahIoOptions>(o =>
-            {
-                o.ApiKey = options.ApiKey;
-                o.ExceptionFormatter = options.ExceptionFormatter;
-                o.HandledStatusCodesToLog = options.HandledStatusCodesToLog;
-                o.LogId = options.LogId;
-                o.OnError = options.OnError;
-                o.OnFilter = options.OnFilter;
-                o.OnMessage = options.OnMessage;
-            });
+            services.Configure(configureOptions);
             return services;
         }
     }

@@ -23,21 +23,21 @@ namespace Elmah.Io.AspNetCore2.Example
         public void ConfigureServices(IServiceCollection services)
         {
             // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
-            services.AddElmahIo(new ElmahIoOptions
+            services.AddElmahIo(options =>
             {
-                ApiKey = "API_KEY",
-                LogId = new Guid("LOG_ID"),
+                options.ApiKey = "API_KEY";
+                options.LogId = new Guid("LOG_ID");
                 // Add event handlers etc. like this:
-                //OnMessage = msg =>
+                //options.OnMessage = msg =>
                 //{
                 //    msg.Version = "2.0.0";
-                //},
+                //};
             });
 
-            // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo:
+            // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.
             //services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
 
-            // If you configure ApiKey and LogId through appsettings.json, you can still add event handlers, configure handled status codes, etc.:
+            // If you configure ApiKey and LogId through appsettings.json, you can still add event handlers, configure handled status codes, etc.
             //services.Configure<ElmahIoOptions>(o =>
             //{
             //    o.OnMessage = msg =>
@@ -62,7 +62,7 @@ namespace Elmah.Io.AspNetCore2.Example
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            // IMPORTANT: registers the elmah.io middleware
+            // IMPORTANT: registers the elmah.io middleware (after registering other exception-aware middleware.
             app.UseElmahIo();
 
             app.UseStaticFiles();

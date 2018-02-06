@@ -13,7 +13,7 @@ namespace Elmah.Io.AspNetCore2.NetFrameworkExample.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            throw new Exception("Do you know what happened to the neanderthals, Bernard? We ate them.");
         }
 
         public IActionResult About()
