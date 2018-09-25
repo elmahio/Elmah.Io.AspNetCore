@@ -9,7 +9,7 @@ build:
   verbosity: minimal
 after_build:
 - ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj --output artifacts
-- ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore.Mvc\Elmah.Io.AspNetCore.Mvc.csproj --output artifacts
+- ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore.TagHelpers\Elmah.Io.AspNetCore.TagHelpers.csproj --output artifacts
 test:
   assemblies:
     only:

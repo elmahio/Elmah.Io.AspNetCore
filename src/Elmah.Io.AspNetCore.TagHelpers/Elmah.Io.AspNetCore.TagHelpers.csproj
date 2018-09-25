@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>An elmah.io provider for ASP.NET Core MVC</Description>
+    <Description>Tag helpers to help integrate elmah.io client-side logging into ASP.NET Core.</Description>
     <Authors>elmah.io</Authors>
     <TargetFramework>netstandard1.1</TargetFramework>
-    <AssemblyName>Elmah.Io.AspNetCore.Mvc</AssemblyName>
-    <PackageId>Elmah.Io.AspNetCore.Mvc</PackageId>
-    <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
+    <AssemblyName>Elmah.Io.AspNetCore.TagHelpers</AssemblyName>
+    <PackageId>Elmah.Io.AspNetCore.TagHelpers</PackageId>
+    <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing;AspNetCore</PackageTags>
     <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
     <PackageProjectUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
 
-namespace Elmah.Io.AspNetCore.Mvc
+namespace Elmah.Io.AspNetCore.TagHelpers
 {
     public class ElmahIoTagHelper : TagHelper
     {
