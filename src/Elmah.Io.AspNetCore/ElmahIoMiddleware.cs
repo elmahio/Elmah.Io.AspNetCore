@@ -56,7 +56,7 @@ namespace Elmah.Io.AspNetCore
             }
             catch (Exception exception)
             {
-                await MessageShipper.ShipAsync(exception, exception.Message, context, _options);
+                await MessageShipper.ShipAsync(exception, exception.GetBaseException().Message, context, _options);
                 throw;
             }
         }

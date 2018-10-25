@@ -13,11 +13,12 @@ namespace Elmah.Io.AspNetCore
     {
         public static async Task ShipAsync(Exception exception, string title, HttpContext context, ElmahIoOptions options)
         {
+            var baseException = exception?.GetBaseException();
             var createMessage = new CreateMessage
             {
                 DateTime = DateTime.UtcNow,
                 Detail = Detail(exception, options),
-                Type = exception?.GetType().Name,
+                Type = baseException?.GetType().Name,
                 Title = title,
                 Data = exception?.ToDataList(),
                 Cookies = Cookies(context),

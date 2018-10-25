@@ -11,13 +11,13 @@ namespace Elmah.Io.AspNetCore
         public static async Task ShipAsync(this Exception exception, HttpContext context)
         {
             var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
-            await MessageShipper.ShipAsync(exception, exception.Message, context, options.Value);
+            await MessageShipper.ShipAsync(exception, exception.GetBaseException().Message, context, options.Value);
         }
 
         public static void Ship(this Exception exception, HttpContext context)
         {
             var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
-            Task.Factory.StartNew(s => MessageShipper.ShipAsync(exception, exception.Message, context, options.Value), null, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
+            Task.Factory.StartNew(s => MessageShipper.ShipAsync(exception, exception.GetBaseException().Message, context, options.Value), null, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Default).Unwrap().GetAwaiter().GetResult();
         }
 
         [Obsolete("Configure apiKey and logId through the new AddElmahIo method and call .ShipAsync(context) instead.")]
@@ -35,7 +35,7 @@ namespace Elmah.Io.AspNetCore
         [Obsolete("Configure apiKey, logId and settings through the new AddElmahIo method and call .ShipAsync(context) instead.")]
         public static async Task ShipAsync(this Exception exception, string apiKey, Guid logId, HttpContext context, ElmahIoSettings settings)
         {
-            await MessageShipper.ShipAsync(exception, exception.Message, context, new ElmahIoOptions
+            await MessageShipper.ShipAsync(exception, exception.GetBaseException().Message, context, new ElmahIoOptions
             {
                 ApiKey = apiKey,
                 LogId = logId,
