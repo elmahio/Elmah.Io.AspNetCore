@@ -30,6 +30,7 @@ namespace Elmah.Io.AspNetCore
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
                 Severity = Severity(exception, context),
+                Source = Source(baseException),
             };
 
             TrySetUser(context, createMessage);
@@ -63,6 +64,11 @@ namespace Elmah.Io.AspNetCore
                 options.OnError?.Invoke(createMessage, e);
                 // If there's a Exception while generating the error page, re-throw the original exception.
             }
+        }
+
+        private static string Source(Exception baseException)
+        {
+            return baseException?.Source;
         }
 
         private static void TrySetUser(HttpContext context, CreateMessage createMessage)
