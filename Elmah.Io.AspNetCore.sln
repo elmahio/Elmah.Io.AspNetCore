@@ -32,6 +32,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore2.NetFra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.TagHelpers", "src\Elmah.Io.AspNetCore.TagHelpers\Elmah.Io.AspNetCore.TagHelpers.csproj", "{070979F0-03D4-4730-A004-5AEC592587A6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.HealthChecks", "src\Elmah.Io.AspNetCore.HealthChecks\Elmah.Io.AspNetCore.HealthChecks.csproj", "{F0AE8A23-0BE1-4A25-92AA-825353C933FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore.HealthChecks.Example", "samples\Elmah.Io.AspNetCore.HealthChecks.Example\Elmah.Io.AspNetCore.HealthChecks.Example.csproj", "{7A0DF681-769F-4809-B54D-FD74094754C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,14 @@ Global
 		{070979F0-03D4-4730-A004-5AEC592587A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{070979F0-03D4-4730-A004-5AEC592587A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{070979F0-03D4-4730-A004-5AEC592587A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0AE8A23-0BE1-4A25-92AA-825353C933FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0AE8A23-0BE1-4A25-92AA-825353C933FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0AE8A23-0BE1-4A25-92AA-825353C933FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0AE8A23-0BE1-4A25-92AA-825353C933FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0DF681-769F-4809-B54D-FD74094754C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0DF681-769F-4809-B54D-FD74094754C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0DF681-769F-4809-B54D-FD74094754C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0DF681-769F-4809-B54D-FD74094754C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +90,8 @@ Global
 		{868EFA13-50B2-4F23-8295-31A3F8546A98} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{443DD342-629D-443C-8991-4115F79038CA} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{070979F0-03D4-4730-A004-5AEC592587A6} = {B9EC1066-4F47-4310-9553-1298325321D8}
+		{F0AE8A23-0BE1-4A25-92AA-825353C933FD} = {B9EC1066-4F47-4310-9553-1298325321D8}
+		{7A0DF681-769F-4809-B54D-FD74094754C0} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DAE57CF5-2DDC-4EF5-85A3-BDA571A8E9A9}
