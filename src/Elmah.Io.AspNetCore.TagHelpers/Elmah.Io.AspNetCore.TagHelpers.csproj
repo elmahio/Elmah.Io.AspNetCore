@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Tag helpers to help integrate elmah.io client-side logging into ASP.NET Core.</Description>
     <Authors>elmah.io</Authors>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Elmah.Io.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Elmah.Io.AspNetCore.TagHelpers</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing;AspNetCore</PackageTags>

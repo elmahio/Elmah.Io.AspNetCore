@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Elmah.Io.AspNetCore.TagHelpers\Elmah.Io.AspNetCore.TagHelpers.csproj" />
     <ProjectReference Include="..\..\src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj" />
   </ItemGroup>
 
