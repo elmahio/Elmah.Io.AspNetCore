@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +10,7 @@ namespace Elmah.Io.AspNetCore
 {
     internal class MessageShipper
     {
+        internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
             queue.QueueBackgroundWorkItem(async token =>
@@ -44,14 +43,10 @@ namespace Elmah.Io.AspNetCore
                     return;
                 }
 
-                var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), new HttpClientHandler
-                {
-                    UseProxy = options.WebProxy != null,
-                    Proxy = options.WebProxy,
-                });
+                var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(options));
                 elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 5);
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Clear();
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", $"{typeof(MessageShipper).GetTypeInfo().Assembly.GetName().Version}")));
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Clear();                
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
 
                 elmahioApi.Messages.OnMessage += (sender, args) =>
                 {
