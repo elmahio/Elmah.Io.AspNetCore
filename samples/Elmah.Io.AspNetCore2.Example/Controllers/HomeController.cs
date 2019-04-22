@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Elmah.Io.AspNetCore2.Example.Models;

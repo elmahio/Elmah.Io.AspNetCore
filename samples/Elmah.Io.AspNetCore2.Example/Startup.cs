@@ -24,6 +24,7 @@ namespace Elmah.Io.AspNetCore2.Example
             {
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
+                options.Application = "ASP.NET Core 2 Application";
                 
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>

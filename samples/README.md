@@ -4,7 +4,6 @@ This directory contains samples to show how to integrate elmah.io into ASP.NET C
 
 ## Samples list
 
-* **Elmah.Io.AspNetCore.Example** - Integrate elmah.io into ASP.NET Core v1 on .NET Core
-* **Elmah.Io.AspNetCore.NetFrameworkExample** - Integrate elmah.io into ASP.NET Core v1 on .NET Framework
+* **Elmah.Io.AspNetCore.HealthChecks.Example** - Shows how to integrate ASP.NET Core Health Checks with elmah.io
 * **Elmah.Io.AspNetCore2.Example** - Integrate elmah.io into ASP.NET Core v2 on .NET Core
 * **Elmah.Io.AspNetCore2.NetFrameworkExample** - Integrate elmah.io into ASP.NET Core v2 on .NET Framework

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Net.Http.Headers;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
@@ -11,59 +10,63 @@ namespace Elmah.Io.AspNetCore
 {
     internal class MessageShipper
     {
-        public static async Task ShipAsync(Exception exception, string title, HttpContext context, ElmahIoOptions options)
+        internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
-            var baseException = exception?.GetBaseException();
-            var createMessage = new CreateMessage
+            queue.QueueBackgroundWorkItem(async token =>
             {
-                DateTime = DateTime.UtcNow,
-                Detail = Detail(exception, options),
-                Type = baseException?.GetType().Name,
-                Title = title,
-                Data = exception?.ToDataList(),
-                Cookies = Cookies(context),
-                Form = Form(context),
-                Hostname = context.Request?.Host.Host,
-                ServerVariables = ServerVariables(context),
-                StatusCode = StatusCode(exception, context),
-                Url = context.Request?.Path.Value,
-                QueryString = QueryString(context),
-                Method = context.Request?.Method,
-                Severity = Severity(exception, context),
-                Source = Source(baseException),
-            };
+                var baseException = exception?.GetBaseException();
+                var createMessage = new CreateMessage
+                {
+                    DateTime = DateTime.UtcNow,
+                    Detail = Detail(exception, options),
+                    Type = baseException?.GetType().Name,
+                    Title = title,
+                    Data = exception?.ToDataList(),
+                    Cookies = Cookies(context),
+                    Form = Form(context),
+                    Hostname = context.Request?.Host.Host,
+                    ServerVariables = ServerVariables(context),
+                    StatusCode = StatusCode(exception, context),
+                    Url = context.Request?.Path.Value,
+                    QueryString = QueryString(context),
+                    Method = context.Request?.Method,
+                    Severity = Severity(exception, context),
+                    Source = Source(baseException),
+                    Application = options.Application,
+                };
 
-            TrySetUser(context, createMessage);
+                TrySetUser(context, createMessage);
 
-            if (options.OnFilter != null && options.OnFilter(createMessage))
-            {
-                return;
-            }
+                if (options.OnFilter != null && options.OnFilter(createMessage))
+                {
+                    return;
+                }
 
-            var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), new HttpClientHandler
-            {
-                UseProxy = options.WebProxy != null,
-                Proxy = options.WebProxy,
+                var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(options));
+                elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 5);
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Clear();                
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
+
+                elmahioApi.Messages.OnMessage += (sender, args) =>
+                {
+                    options.OnMessage?.Invoke(args.Message);
+                };
+                elmahioApi.Messages.OnMessageFail += (sender, args) =>
+                {
+                    options.OnError?.Invoke(args.Message, args.Error);
+                };
+
+                try
+                {
+                    await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage);
+                }
+                catch (Exception e)
+                {
+                    options.OnError?.Invoke(createMessage, e);
+                    // If there's a Exception while generating the error page, re-throw the original exception.
+                }
             });
-
-            elmahioApi.Messages.OnMessage += (sender, args) =>
-            {
-                options.OnMessage?.Invoke(args.Message);
-            };
-            elmahioApi.Messages.OnMessageFail += (sender, args) =>
-            {
-                options.OnError?.Invoke(args.Message, args.Error);
-            };
-
-            try
-            {
-                await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage);
-            }
-            catch (Exception e)
-            {
-                options.OnError?.Invoke(createMessage, e);
-                // If there's a Exception while generating the error page, re-throw the original exception.
-            }
         }
 
         private static string Source(Exception baseException)

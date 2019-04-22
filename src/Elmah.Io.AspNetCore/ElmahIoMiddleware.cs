@@ -9,39 +9,16 @@ namespace Elmah.Io.AspNetCore
     public class ElmahIoMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IBackgroundTaskQueue _queue;
         private readonly ElmahIoOptions _options;
 
-        public ElmahIoMiddleware(RequestDelegate next, IOptions<ElmahIoOptions> options)
+        public ElmahIoMiddleware(RequestDelegate next, IBackgroundTaskQueue queue, IOptions<ElmahIoOptions> options)
         {
             _next = next;
+            _queue = queue;
             _options = options.Value;
             _options.ApiKey.AssertApiKey();
             _options.LogId.AssertLogId();
-        }
-
-        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
-        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId) : this(next, apiKey, logId, new ElmahIoSettings())
-        {
-        }
-
-        [Obsolete("Use the constructor accepting a IOptions<ElmahIoOptions> parameter instead")]
-        public ElmahIoMiddleware(RequestDelegate next, string apiKey, Guid logId, ElmahIoSettings settings)
-        {
-            _next = next;
-            apiKey.AssertApiKey();
-            logId.AssertLogId();
-            settings.AssertSettings();
-            _options = new ElmahIoOptions
-            {
-                ApiKey = apiKey,
-                LogId = logId,
-                ExceptionFormatter = settings.ExceptionFormatter,
-                HandledStatusCodesToLog = settings.HandledStatusCodesToLog,
-                OnError = settings.OnError,
-                OnFilter = settings.OnFilter,
-                OnMessage = settings.OnMessage,
-                WebProxy = settings.WebProxy,
-            };
         }
 
         public async Task Invoke(HttpContext context)
@@ -51,12 +28,12 @@ namespace Elmah.Io.AspNetCore
                 await _next.Invoke(context);
                 if (ShoudLogStatusCode(context))
                 {
-                    await MessageShipper.ShipAsync(null, "Unsuccessful status code in response", context, _options);
+                    MessageShipper.Ship(null, "Unsuccessful status code in response", context, _options, _queue);
                 }
             }
             catch (Exception exception)
             {
-                await MessageShipper.ShipAsync(exception, exception.GetBaseException().Message, context, _options);
+                MessageShipper.Ship(exception, exception.GetBaseException().Message, context, _options, _queue);
                 throw;
             }
         }

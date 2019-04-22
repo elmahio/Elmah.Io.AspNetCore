@@ -6,18 +6,6 @@ namespace Elmah.Io.AspNetCore
 {
     public static class ElmahIoExtensions
     {
-        [Obsolete("Configuration of apiKey and logId have been moved to the AddElmahIo method. When adding a call to that method in your ConfigureServices-method, call UseElmahIo (no parameters) in the Configure-method instead.")]
-        public static IApplicationBuilder UseElmahIo(this IApplicationBuilder app, string apiKey, Guid logId)
-        {
-            return app.UseElmahIo(apiKey, logId, new ElmahIoSettings());
-        }
-
-        [Obsolete("Configuration of apiKey, logId and settings have been moved to the AddElmahIo method. When adding a call to that method in your ConfigureServices-method, call UseElmahIo (no parameters) in the Configure-method instead.")]
-        public static IApplicationBuilder UseElmahIo(this IApplicationBuilder app, string apiKey, Guid logId, ElmahIoSettings settings)
-        {
-            return app.UseMiddleware<ElmahIoMiddleware>(apiKey, logId, settings);
-        }
-
         public static IApplicationBuilder UseElmahIo(this IApplicationBuilder app)
         {
             return app.UseMiddleware<ElmahIoMiddleware>();
@@ -25,6 +13,10 @@ namespace Elmah.Io.AspNetCore
 
         public static IServiceCollection AddElmahIo(this IServiceCollection services, Action<ElmahIoOptions> configureOptions)
         {
+            services.AddHostedService<QueuedHostedService>();
+            services.AddHostedService<OtherQueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+            services.AddSingleton<IOtherBackgroundTaskQueue, OtherBackgroundTaskQueue>();
             services.Configure(configureOptions);
             return services;
         }

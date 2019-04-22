@@ -18,6 +18,8 @@ namespace Elmah.Io.AspNetCore
 
         public Guid LogId { get; set; }
 
+        public string Application { get; set; }
+
         public Action<CreateMessage> OnMessage { get; set; }
 
         public Action<CreateMessage, Exception> OnError { get; set; }
