@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,8 +9,7 @@ namespace Elmah.Io.AspNetCore
     {
         void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem);
 
-        Task<Func<CancellationToken, Task>> DequeueAsync(
-            CancellationToken cancellationToken);
+        Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken);
     }
 
     public class BackgroundTaskQueue : IBackgroundTaskQueue

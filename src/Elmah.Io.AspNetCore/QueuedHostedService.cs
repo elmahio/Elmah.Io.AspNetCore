@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,23 +7,27 @@ namespace Elmah.Io.AspNetCore
 {
     public class QueuedHostedService : BackgroundService
     {
-        public QueuedHostedService(IBackgroundTaskQueue taskQueue)
-        {
-            TaskQueue = taskQueue;
-        }
+        private readonly IBackgroundTaskQueue _taskQueue;
+        private readonly IOtherBackgroundTaskQueue otherBackgroundTaskQueue;
 
-        public IBackgroundTaskQueue TaskQueue { get; }
+        public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue)
+        {
+            _taskQueue = taskQueue;
+            this.otherBackgroundTaskQueue = otherBackgroundTaskQueue;
+        }        
 
         protected async override Task ExecuteAsync(
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var workItem = await TaskQueue.DequeueAsync(cancellationToken);
+
+                var workItem = await _taskQueue.DequeueAsync(cancellationToken);
 
                 try
                 {
-                    await workItem(cancellationToken);
+                    var blah = workItem(cancellationToken);
+                    otherBackgroundTaskQueue.QueueBackgroundWorkItem(blah);
                 }
                 catch (Exception ex)
                 {
