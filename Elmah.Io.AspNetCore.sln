@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore", "src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj", "{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore2.Example", "samples\Elmah.Io.AspNetCore2.Example\Elmah.Io.AspNetCore2.Example.csproj", "{868EFA13-50B2-4F23-8295-31A3F8546A98}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.HealthChecks.Example", "samples\Elmah.Io.AspNetCore.HealthChecks.Example\Elmah.Io.AspNetCore.HealthChecks.Example.csproj", "{3D1A2D64-1424-41C3-91BB-BBABA53D8D18}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.HealthChecks", "src\Elmah.Io.AspNetCore.HealthChecks\Elmah.Io.AspNetCore.HealthChecks.csproj", "{8549D00D-1627-43BF-B512-C9B825009095}"
@@ -30,7 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.TagHelp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.Tests", "test\Elmah.Io.AspNetCore.Tests\Elmah.Io.AspNetCore.Tests.csproj", "{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore2.NetFrameworkExample", "samples\Elmah.Io.AspNetCore2.NetFrameworkExample\Elmah.Io.AspNetCore2.NetFrameworkExample.csproj", "{621C280D-6378-4786-A8F1-6F89FA31A2AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore21.Example", "samples\Elmah.Io.AspNetCore21.Example\Elmah.Io.AspNetCore21.Example.csproj", "{246338BB-471B-4046-A757-65545FDE8EF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore22.Example", "samples\Elmah.Io.AspNetCore22.Example\Elmah.Io.AspNetCore22.Example.csproj", "{EC1DEB50-4345-439E-873F-00005A563BE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore21.NetFrameworkExample", "samples\Elmah.Io.AspNetCore21.NetFrameworkExample\Elmah.Io.AspNetCore21.NetFrameworkExample.csproj", "{F4755D2C-3704-475A-93FF-E9B211FE8A05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +44,6 @@ Global
 		{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{868EFA13-50B2-4F23-8295-31A3F8546A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{868EFA13-50B2-4F23-8295-31A3F8546A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{868EFA13-50B2-4F23-8295-31A3F8546A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{868EFA13-50B2-4F23-8295-31A3F8546A98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D1A2D64-1424-41C3-91BB-BBABA53D8D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D1A2D64-1424-41C3-91BB-BBABA53D8D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D1A2D64-1424-41C3-91BB-BBABA53D8D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,22 +60,31 @@ Global
 		{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{621C280D-6378-4786-A8F1-6F89FA31A2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{621C280D-6378-4786-A8F1-6F89FA31A2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{621C280D-6378-4786-A8F1-6F89FA31A2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{621C280D-6378-4786-A8F1-6F89FA31A2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{246338BB-471B-4046-A757-65545FDE8EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{246338BB-471B-4046-A757-65545FDE8EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{246338BB-471B-4046-A757-65545FDE8EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{246338BB-471B-4046-A757-65545FDE8EF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC1DEB50-4345-439E-873F-00005A563BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC1DEB50-4345-439E-873F-00005A563BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC1DEB50-4345-439E-873F-00005A563BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC1DEB50-4345-439E-873F-00005A563BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B9CE3863-95A7-4DBA-9D04-BB5A5ACF4AC5} = {B9EC1066-4F47-4310-9553-1298325321D8}
-		{868EFA13-50B2-4F23-8295-31A3F8546A98} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{3D1A2D64-1424-41C3-91BB-BBABA53D8D18} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{8549D00D-1627-43BF-B512-C9B825009095} = {B9EC1066-4F47-4310-9553-1298325321D8}
 		{143AD06F-4F57-4E6B-9C09-A38005E5C025} = {B9EC1066-4F47-4310-9553-1298325321D8}
 		{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3} = {E0D4A60F-5411-4587-A085-D41117F83905}
-		{621C280D-6378-4786-A8F1-6F89FA31A2AA} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
+		{246338BB-471B-4046-A757-65545FDE8EF6} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
+		{EC1DEB50-4345-439E-873F-00005A563BE9} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
+		{F4755D2C-3704-475A-93FF-E9B211FE8A05} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DAE57CF5-2DDC-4EF5-85A3-BDA571A8E9A9}
