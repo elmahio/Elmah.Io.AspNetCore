@@ -11,13 +11,5 @@ namespace Elmah.Io.AspNetCore.Extensions
 
             return logId;
         }
-
-        public static Guid AssertLogIdInMiddleware(this Guid logId)
-        {
-            if (logId == Guid.Empty)
-                throw new ArgumentNullException(nameof(logId), "Log ID not initialized through elmah.io middleware");
-
-            return logId;
-        }
     }
 }

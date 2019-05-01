@@ -11,13 +11,33 @@ namespace Elmah.Io.AspNetCore
             return app.UseMiddleware<ElmahIoMiddleware>();
         }
 
+        /// <summary>
+        /// Add elmah.io with the specified options.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configureOptions"></param>
+        /// <returns></returns>
         public static IServiceCollection AddElmahIo(this IServiceCollection services, Action<ElmahIoOptions> configureOptions)
+        {
+            services.AddElmahIo();
+            services.Configure(configureOptions);
+            return services;
+        }
+
+        /// <summary>
+        /// Add elmah.io without any options. Calling this method requires you to configure elmah.io options manually like this:
+        /// 
+        /// <code>services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));</code>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddElmahIo(this IServiceCollection services)
         {
             services.AddHostedService<QueuedHostedService>();
             services.AddHostedService<OtherQueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             services.AddSingleton<IOtherBackgroundTaskQueue, OtherBackgroundTaskQueue>();
-            services.Configure(configureOptions);
             return services;
         }
     }
