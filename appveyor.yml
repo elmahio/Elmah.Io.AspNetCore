@@ -10,7 +10,7 @@ build:
 after_build:
 - ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj --output artifacts
 - ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore.TagHelpers\Elmah.Io.AspNetCore.TagHelpers.csproj --output artifacts
-- ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION-pre src\Elmah.Io.AspNetCore.HealthChecks\Elmah.Io.AspNetCore.HealthChecks.csproj --output artifacts
+- ps: dotnet pack /p:Version=$env:APPVEYOR_BUILD_VERSION src\Elmah.Io.AspNetCore.HealthChecks\Elmah.Io.AspNetCore.HealthChecks.csproj --output artifacts
 test:
   assemblies:
     only:
