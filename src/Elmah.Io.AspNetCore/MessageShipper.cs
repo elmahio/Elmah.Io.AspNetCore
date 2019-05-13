@@ -11,38 +11,39 @@ namespace Elmah.Io.AspNetCore
     internal class MessageShipper
     {
         internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
+            var baseException = exception?.GetBaseException();
+            var createMessage = new CreateMessage
+            {
+                DateTime = DateTime.UtcNow,
+                Detail = Detail(exception, options),
+                Type = baseException?.GetType().Name,
+                Title = title,
+                Data = exception?.ToDataList(),
+                Cookies = Cookies(context),
+                Form = Form(context),
+                Hostname = context.Request?.Host.Host,
+                ServerVariables = ServerVariables(context),
+                StatusCode = StatusCode(exception, context),
+                Url = context.Request?.Path.Value,
+                QueryString = QueryString(context),
+                Method = context.Request?.Method,
+                Severity = Severity(exception, context),
+                Source = Source(baseException),
+                Application = options.Application,
+            };
+
+            TrySetUser(context, createMessage);
+
+            if (options.OnFilter != null && options.OnFilter(createMessage))
+            {
+                return;
+            }
+
             queue.QueueBackgroundWorkItem(async token =>
             {
-                var baseException = exception?.GetBaseException();
-                var createMessage = new CreateMessage
-                {
-                    DateTime = DateTime.UtcNow,
-                    Detail = Detail(exception, options),
-                    Type = baseException?.GetType().Name,
-                    Title = title,
-                    Data = exception?.ToDataList(),
-                    Cookies = Cookies(context),
-                    Form = Form(context),
-                    Hostname = context.Request?.Host.Host,
-                    ServerVariables = ServerVariables(context),
-                    StatusCode = StatusCode(exception, context),
-                    Url = context.Request?.Path.Value,
-                    QueryString = QueryString(context),
-                    Method = context.Request?.Method,
-                    Severity = Severity(exception, context),
-                    Source = Source(baseException),
-                    Application = options.Application,
-                };
-
-                TrySetUser(context, createMessage);
-
-                if (options.OnFilter != null && options.OnFilter(createMessage))
-                {
-                    return;
-                }
-
                 var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(options));
                 elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 5);
                 elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Clear();                
