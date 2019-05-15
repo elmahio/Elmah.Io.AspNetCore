@@ -19,7 +19,7 @@ namespace Elmah.Io.AspNetCore
             {
                 DateTime = DateTime.UtcNow,
                 Detail = Detail(exception, options),
-                Type = baseException?.GetType().Name,
+                Type = baseException?.GetType().FullName,
                 Title = title,
                 Data = exception?.ToDataList(),
                 Cookies = Cookies(context),
