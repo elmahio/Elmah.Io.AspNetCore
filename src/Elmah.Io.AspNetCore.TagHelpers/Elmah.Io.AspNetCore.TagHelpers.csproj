@@ -8,7 +8,9 @@
     <PackageId>Elmah.Io.AspNetCore.TagHelpers</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing;AspNetCore</PackageTags>
     <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
-    <PackageProjectUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</PackageProjectUrl>
+    <PackageProjectUrl>https://elmah.io</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
