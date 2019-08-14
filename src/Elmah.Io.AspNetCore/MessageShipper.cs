@@ -44,7 +44,10 @@ namespace Elmah.Io.AspNetCore
 
             queue.QueueBackgroundWorkItem(async token =>
             {
-                var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(options));
+                var elmahioApi = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(new Client.ElmahIoOptions
+                {
+                    WebProxy = options.WebProxy
+                }));
                 elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 5);
                 elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Clear();                
                 elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
