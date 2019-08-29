@@ -8,25 +8,31 @@ namespace Elmah.Io.AspNetCore
     public class OtherQueuedHostedService : BackgroundService
     {
         private readonly IOtherBackgroundTaskQueue _taskQueue;
+        private Task _backgroundRunner;
         public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue)
         {
             _taskQueue = taskQueue;
         }
 
-        protected async override Task ExecuteAsync(
+        protected override Task ExecuteAsync(
             CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            _backgroundRunner = Task.Run(async () =>
             {
-                try
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    var t = _taskQueue.DequeueAsync(cancellationToken);
-                    await t;
+                    try
+                    {
+                        var t = _taskQueue.DequeueAsync(cancellationToken);
+                        await t;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
                 }
-                catch (Exception ex)
-                {
-                }
-            }
+            });
+
+            return Task.CompletedTask;
         }
     }
 }
