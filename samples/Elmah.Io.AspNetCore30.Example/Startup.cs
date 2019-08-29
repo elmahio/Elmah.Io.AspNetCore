@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Elmah.Io.AspNetCore22.Example
+namespace Elmah.Io.AspNetCore30.Example
 {
     public class Startup
     {
@@ -31,19 +28,18 @@ namespace Elmah.Io.AspNetCore22.Example
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            // IMPORTANT: this is where the magic happens. Insert your api key found on the profile as well as the log id of the log to log to.
             services.AddElmahIo(options =>
             {
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
 
                 // Optional application name
-                //options.Application = "ASP.NET Core 2.2 Application";
+                //options.Application = "ASP.NET Core 3.0 Application";
 
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
                 //{
-                //    msg.Version = "2.2.0";
+                //    msg.Version = "3.0.0";
                 //};
 
                 // Remove comment on the following line to log through a proxy (in this case Fiddler).
@@ -60,7 +56,7 @@ namespace Elmah.Io.AspNetCore22.Example
             //{
             //    o.OnMessage = msg =>
             //    {
-            //        msg.Version = "2.2.0";
+            //        msg.Version = "3.0.0";
             //    };
             //});
 
@@ -77,11 +73,14 @@ namespace Elmah.Io.AspNetCore22.Example
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             // IMPORTANT: registers the elmah.io middleware (after registering other exception-aware middleware.
             app.UseElmahIo();
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

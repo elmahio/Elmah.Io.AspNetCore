@@ -28,11 +28,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.TagHelp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore.Tests", "test\Elmah.Io.AspNetCore.Tests\Elmah.Io.AspNetCore.Tests.csproj", "{7F9CB9B1-BDB3-430B-84AF-0BCD8CE1C4F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore21.Example", "samples\Elmah.Io.AspNetCore21.Example\Elmah.Io.AspNetCore21.Example.csproj", "{246338BB-471B-4046-A757-65545FDE8EF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore21.Example", "samples\Elmah.Io.AspNetCore21.Example\Elmah.Io.AspNetCore21.Example.csproj", "{246338BB-471B-4046-A757-65545FDE8EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore22.Example", "samples\Elmah.Io.AspNetCore22.Example\Elmah.Io.AspNetCore22.Example.csproj", "{EC1DEB50-4345-439E-873F-00005A563BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore22.Example", "samples\Elmah.Io.AspNetCore22.Example\Elmah.Io.AspNetCore22.Example.csproj", "{EC1DEB50-4345-439E-873F-00005A563BE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore21.NetFrameworkExample", "samples\Elmah.Io.AspNetCore21.NetFrameworkExample\Elmah.Io.AspNetCore21.NetFrameworkExample.csproj", "{F4755D2C-3704-475A-93FF-E9B211FE8A05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore21.NetFrameworkExample", "samples\Elmah.Io.AspNetCore21.NetFrameworkExample\Elmah.Io.AspNetCore21.NetFrameworkExample.csproj", "{F4755D2C-3704-475A-93FF-E9B211FE8A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore30.Example", "samples\Elmah.Io.AspNetCore30.Example\Elmah.Io.AspNetCore30.Example.csproj", "{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,10 @@ Global
 		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4755D2C-3704-475A-93FF-E9B211FE8A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{246338BB-471B-4046-A757-65545FDE8EF6} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{EC1DEB50-4345-439E-873F-00005A563BE9} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 		{F4755D2C-3704-475A-93FF-E9B211FE8A05} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
+		{A94B91D2-6F4F-490B-BDC1-AEDEC7B629F7} = {AEAB4533-28CE-4CA9-9CD7-FC7FEF911204}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DAE57CF5-2DDC-4EF5-85A3-BDA571A8E9A9}
