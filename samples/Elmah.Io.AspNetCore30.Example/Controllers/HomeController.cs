@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
-using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore30.Example.Models;
 
 namespace Elmah.Io.AspNetCore30.Example.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             throw new Exception("Do you know what happened to the neanderthals, Bernard? We ate them.");
