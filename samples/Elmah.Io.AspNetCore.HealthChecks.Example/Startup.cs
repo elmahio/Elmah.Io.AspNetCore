@@ -40,6 +40,8 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                 //    throw new ApplicationException("This is failing");
                 //})
                 .AddElmahIoPublisher("API_KEY", new Guid("LOG_ID"));
+                // Comment out the following if you want to configure the publisher from appsettings.json:
+                //.AddElmahIoPublisher(Configuration["ElmahIo:ApiKey"], new Guid(Configuration["ElmahIo:LogId"]));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
