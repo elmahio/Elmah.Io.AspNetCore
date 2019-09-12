@@ -36,14 +36,15 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 .Cast<HealthReportEntry?>()
                 .FirstOrDefault(v => v.HasValue && v.Value.Exception != null);
 
+            var baseException = firstErrorWithException?.Exception.GetBaseException();
             var msg = new CreateMessage
             {
                 Title = Title(report),
                 Severity = Severity(report.Status),
                 Detail = Detail(report),
                 DateTime = DateTime.UtcNow,
-                Type = firstErrorWithException?.Exception.GetBaseException().GetType().Name,
-                Source = firstErrorWithException?.Exception.GetBaseException().Source,
+                Type = baseException?.GetType().FullName,
+                Source = baseException?.Source,
                 Hostname = Environment.MachineName,
                 Data = Data(report),
                 Application = application,
