@@ -46,6 +46,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 Source = firstErrorWithException?.Exception.GetBaseException().Source,
                 Hostname = Environment.MachineName,
                 Data = Data(report),
+                Application = application,
             };
 
             var result = api.Messages.CreateAndNotify(logId, msg);
