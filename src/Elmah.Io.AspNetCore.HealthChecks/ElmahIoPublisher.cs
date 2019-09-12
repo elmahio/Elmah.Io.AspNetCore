@@ -27,9 +27,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         {
             if (report.Status == HealthStatus.Healthy) return Task.CompletedTask;
 
-            var api = ElmahioAPI.Create(apiKey);
-            api.Messages.OnMessageFail += Messages_OnMessageFail;
-            api.Messages.OnMessage += Messages_OnMessage;
+            var api = new ElmahioAPI(new ApiKeyCredentials(apiKey), HttpClientHandlerFactory.GetHttpClientHandler(new ElmahIoOptions()));
 
             var firstErrorWithException = report
                 .Entries
@@ -82,14 +80,6 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         private string Title(HealthReport report)
         {
             return $"{(string.IsNullOrWhiteSpace(application) ? "Application" : application)} in {report.Status} state";
-        }
-
-        private void Messages_OnMessage(object sender, MessageEventArgs e)
-        {
-        }
-
-        private void Messages_OnMessageFail(object sender, FailEventArgs e)
-        {
         }
 
         private string Detail(HealthReport report)
