@@ -1,6 +1,8 @@
 ﻿using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,45 +14,55 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 {
     public class ElmahIoPublisher : IHealthCheckPublisher
     {
-        private readonly string apiKey;
-        private readonly Guid logId;
-        private readonly string application;
+        private readonly ILogger<ElmahIoPublisher> logger;
+        private readonly IOptions<ElmahIoPublisherOptions> options;
+        private ElmahioAPI api;
 
-        public ElmahIoPublisher(string apiKey, Guid logId, string application)
+        public ElmahIoPublisher(ILogger<ElmahIoPublisher> logger, IOptions<ElmahIoPublisherOptions> options)
         {
-            this.apiKey = apiKey;
-            this.logId = logId;
-            this.application = application;
+            this.logger = logger;
+            this.options = options;
         }
 
         public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
         {
-            if (report.Status == HealthStatus.Healthy) return Task.CompletedTask;
-
-            var api = new ElmahioAPI(new ApiKeyCredentials(apiKey), HttpClientHandlerFactory.GetHttpClientHandler(new ElmahIoOptions()));
-
-            var firstErrorWithException = report
-                .Entries
-                .Values
-                .OrderBy(v => v.Status)
-                .Cast<HealthReportEntry?>()
-                .FirstOrDefault(v => v.HasValue && v.Value.Exception != null);
-
-            var baseException = firstErrorWithException?.Exception.GetBaseException();
-            var msg = new CreateMessage
+            try
             {
-                Title = Title(report),
-                Severity = Severity(report.Status),
-                Detail = Detail(report),
-                DateTime = DateTime.UtcNow,
-                Type = baseException?.GetType().FullName,
-                Source = baseException?.Source,
-                Hostname = Environment.MachineName,
-                Data = Data(report),
-                Application = application,
-            };
+                if (report.Status == HealthStatus.Healthy) return Task.CompletedTask;
 
-            var result = api.Messages.CreateAndNotify(logId, msg);
+                if (api == null)
+                {
+                    api = new ElmahioAPI(new ApiKeyCredentials(options.Value.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(new ElmahIoOptions()));
+                }
+
+                var firstErrorWithException = report
+                    .Entries
+                    .Values
+                    .OrderBy(v => v.Status)
+                    .Cast<HealthReportEntry?>()
+                    .FirstOrDefault(v => v.HasValue && v.Value.Exception != null);
+
+                var baseException = firstErrorWithException?.Exception.GetBaseException();
+                var msg = new CreateMessage
+                {
+                    Title = Title(report),
+                    Severity = Severity(report.Status),
+                    Detail = Detail(report),
+                    DateTime = DateTime.UtcNow,
+                    Type = baseException?.GetType().FullName,
+                    Source = baseException?.Source,
+                    Hostname = Environment.MachineName,
+                    Data = Data(report),
+                    Application = options.Value.Application,
+                };
+
+                var result = api.Messages.CreateAndNotify(options.Value.LogId, msg);
+            }
+            catch (Exception e)
+            {
+                logger?.LogError(e, "Error during publishing health check status to elmah.io.");
+                throw;
+            }
 
             return Task.CompletedTask;
         }
@@ -81,7 +93,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
         private string Title(HealthReport report)
         {
-            return $"{(string.IsNullOrWhiteSpace(application) ? "Application" : application)} in {report.Status} state";
+            return $"{(string.IsNullOrWhiteSpace(options.Value.Application) ? "Application" : options.Value.Application)} in {report.Status} state";
         }
 
         private string Detail(HealthReport report)

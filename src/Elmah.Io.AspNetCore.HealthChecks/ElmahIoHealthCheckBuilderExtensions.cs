@@ -10,17 +10,42 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         /// Add a health check publisher elmah.io.
         /// </summary>
         /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
-        /// <param name="apiKey">TODO</param>
-        /// <param name="logId">TODO</param>
         /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        [Obsolete("Use the overload accepting ElmahIoPublisherOptions.")]
         public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder, string apiKey, Guid logId, string application = null)
         {
-            builder.Services
-               .AddSingleton<IHealthCheckPublisher>(sp =>
-               {
-                   return new ElmahIoPublisher(apiKey, logId, application);
-               });
+            return AddElmahIoPublisher(builder, options =>
+            {
+                options.ApiKey = apiKey;
+                options.LogId = logId;
+                options.Application = application;
+            });
+        }
 
+        /// <summary>
+        /// Add a health check publisher elmah.io.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
+        /// <param name="options">Options used to configure the elmah.io health check publisher.</param>
+        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder, Action<ElmahIoPublisherOptions> options)
+        {
+            builder.AddElmahIoPublisher();
+            builder.Services.Configure(options);
+            return builder;
+        }
+
+        /// <summary>
+        /// Add a health check publisher elmah.io.Calling this method requires you to configure elmah.io options manually like this:
+        /// 
+        /// <code>services.Configure<ElmahIoPublisherOptions>(Configuration.GetSection("ElmahIo"));</code>
+        /// 
+        /// </summary>
+        /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
+        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder)
+        {
+            builder.Services.AddSingleton<IHealthCheckPublisher, ElmahIoPublisher>();
             return builder;
         }
     }

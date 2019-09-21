@@ -50,7 +50,7 @@ namespace Elmah.Io.AspNetCore22.Example
                 //options.WebProxy = new WebProxy("localhost", 8888);
             });
 
-            // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.
+            // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method:
             //services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
             // Still need to call this to register all dependencies
             //services.AddElmahIo();

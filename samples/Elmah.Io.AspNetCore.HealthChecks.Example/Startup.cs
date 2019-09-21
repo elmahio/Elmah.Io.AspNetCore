@@ -32,6 +32,9 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method:
+            //services.Configure<ElmahIoPublisherOptions>(Configuration.GetSection("ElmahIo"));
+
             services
                 .AddHealthChecks()
                 // Comment out the following to have health checks fail:
@@ -39,9 +42,13 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                 //{
                 //    throw new ApplicationException("This is failing");
                 //})
-                .AddElmahIoPublisher("API_KEY", new Guid("LOG_ID"));
-                // Comment out the following if you want to configure the publisher from appsettings.json:
-                //.AddElmahIoPublisher(Configuration["ElmahIo:ApiKey"], new Guid(Configuration["ElmahIo:LogId"]));
+                .AddElmahIoPublisher(options =>
+                {
+                    options.ApiKey = "API_KEY";
+                    options.LogId = new Guid("LOG_ID");
+                });
+                // Comment out the following if you want to configure the publisher from appsettings.json (remember to configure ElmahIoPublisherOptions manually as shown above):
+                //.AddElmahIoPublisher();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
