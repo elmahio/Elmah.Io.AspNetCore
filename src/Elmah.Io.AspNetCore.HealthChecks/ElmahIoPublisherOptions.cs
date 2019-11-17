@@ -8,6 +8,8 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
         public Guid LogId { get; set; }
 
+        public string HeartbeatId { get; set; }
+
         public string Application { get; set; }
     }
 }
