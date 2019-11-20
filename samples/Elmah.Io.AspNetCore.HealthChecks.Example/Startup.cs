@@ -33,6 +33,13 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                     options.ApiKey = "API_KEY";
                     options.LogId = new Guid("LOG_ID");
                     options.HeartbeatId = "HEARTBEAT_ID";
+                    // Override the application name (defaults to "Heartbeats"):
+                    //options.Application = "My app";
+                    // Get a callback on every heartbeat:
+                    //options.OnHeartbeat = msg =>
+                    //{
+                    //    msg.Version = "3.0.0";
+                    //};
                 });
             // Comment out the following if you want to configure the publisher from appsettings.json (remember to configure ElmahIoPublisherOptions manually as shown above):
             //.AddElmahIoPublisher();
