@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using Elmah.Io.Client;
@@ -141,6 +142,10 @@ namespace Elmah.Io.AspNetCore
             catch (InvalidOperationException)
             {
                 // Request not a form POST or similar
+            }
+            catch (InvalidDataException)
+            {
+                // Form body without a content-type or similar
             }
 
             return null;
