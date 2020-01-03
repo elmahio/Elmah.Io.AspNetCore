@@ -4,6 +4,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 {
     public class ElmahIoPublisher : IHealthCheckPublisher
     {
+        internal static string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
+
         private readonly ILogger<ElmahIoPublisher> logger;
         private readonly ElmahIoPublisherOptions options;
         private ElmahioAPI api;
@@ -28,7 +31,10 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             {
                 if (api == null)
                 {
-                    api = new ElmahioAPI(new ApiKeyCredentials(options.ApiKey), HttpClientHandlerFactory.GetHttpClientHandler(new ElmahIoOptions()));
+                    api = (ElmahioAPI)ElmahioAPI.Create(options.ApiKey, new ElmahIoOptions());
+                    // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
+                    api.HttpClient.Timeout = new TimeSpan(0, 0, 0, 0, 10);
+                    api.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)));
                 }
 
                 var createHeartbeat = new CreateHeartbeat
