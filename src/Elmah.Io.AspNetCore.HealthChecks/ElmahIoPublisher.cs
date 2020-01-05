@@ -58,7 +58,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 catch (Exception inner)
                 {
                     options.OnError?.Invoke(createHeartbeat, inner);
-                    throw inner;
+                    throw;
                 }
             }
             catch (Exception e)
