@@ -33,7 +33,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 {
                     api = (ElmahioAPI)ElmahioAPI.Create(options.ApiKey, new ElmahIoOptions());
                     // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
-                    api.HttpClient.Timeout = new TimeSpan(0, 0, 0, 0, 10);
+                    api.HttpClient.Timeout = new TimeSpan(0, 0, 0, 30);
                     api.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)));
                 }
 
