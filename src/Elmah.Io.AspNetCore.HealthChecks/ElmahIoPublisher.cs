@@ -4,6 +4,8 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
@@ -73,14 +75,43 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             var sb = new StringBuilder();
             sb.Append(options.Application ?? "Application");
             sb.AppendLine($" in {report.Status} state (took: {report.TotalDuration})");
-            sb.AppendLine();
-            sb.AppendLine("Health Checks:");
+
+            var remainingCount = report.Entries.Count;
+            if (remainingCount > 0) sb.AppendLine();
+
+            var unhealthy = new List<KeyValuePair<string, HealthReportEntry>>();
+            var degraded = new List<KeyValuePair<string, HealthReportEntry>>();
+            var healthy = new List<KeyValuePair<string, HealthReportEntry>>();
+
             foreach (var s in report.Entries)
             {
-                sb.AppendLine($"- {s.Key}: {s.Value.Status}. Took: {s.Value.Duration}. Description: {s.Value.Description}");
+                if (s.Value.Status == HealthStatus.Unhealthy) unhealthy.Add(s);
+                if (s.Value.Status == HealthStatus.Degraded) degraded.Add(s);
+                if (s.Value.Status == HealthStatus.Healthy) healthy.Add(s);
             }
 
+            remainingCount = degraded.Count + healthy.Count;
+            Generate(sb, unhealthy, "Unhealthy", remainingCount);
+            remainingCount = healthy.Count;
+            Generate(sb, degraded, "Degraded", remainingCount);
+            remainingCount = 0;
+            Generate(sb, healthy, "Healthy", remainingCount);
+
             return sb.ToString();
+        }
+
+        private void Generate(StringBuilder sb, List<KeyValuePair<string, HealthReportEntry>> checks, string category, int remainingCount)
+        {
+            if (checks.Any())
+            {
+                sb.AppendLine($"{category} checks:");
+                foreach (var s in checks.OrderBy(u => u.Key))
+                {
+                    sb.AppendLine($"- {s.Key}: {s.Value.Status}. Took: {s.Value.Duration}. Description: {s.Value.Description}");
+                }
+
+                if (remainingCount > 0) sb.AppendLine();
+            }
         }
 
         private string Result(HealthReport report)
