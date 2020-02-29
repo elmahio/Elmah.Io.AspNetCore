@@ -6,6 +6,11 @@ namespace Elmah.Io.AspNetCore
 {
     public static class ElmahIoExtensions
     {
+        /// <summary>
+        /// This method register the middleware with ASP.NET Core.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
         public static IApplicationBuilder UseElmahIo(this IApplicationBuilder app)
         {
             return app.UseMiddleware<ElmahIoMiddleware>();

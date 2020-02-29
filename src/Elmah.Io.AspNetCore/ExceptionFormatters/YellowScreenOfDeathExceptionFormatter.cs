@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Elmah.Io.AspNetCore.ExceptionFormatters
 {
+    /// <summary>
+    /// An exception formatter that formats a thrown exception like the yellow screen of death known from ASP.NET.
+    /// </summary>
     public class YellowScreenOfDeathExceptionFormatter : IExceptionFormatter
     {
         public string Format(Exception exception)

@@ -6,6 +6,15 @@ namespace Elmah.Io.AspNetCore
 {
     public static class ExceptionExtensions
     {
+
+        /// <summary>
+        /// Ship an exception to elmah.io manually:
+        /// 
+        /// <code>ex.Ship(HttpContext);</code>
+        /// 
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <param name="context"></param>
         public static void Ship(this Exception exception, HttpContext context)
         {
             var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
