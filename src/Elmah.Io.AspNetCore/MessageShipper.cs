@@ -139,13 +139,12 @@ namespace Elmah.Io.AspNetCore
             {
                 return httpContext.Request?.Form?.Keys.Select(k => new Item(k, httpContext.Request.Form[k])).ToList();
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
-                // Request not a form POST or similar
-            }
-            catch (InvalidDataException)
-            {
-                // Form body without a content-type or similar
+                // All sorts of exceptions can happen while trying to read from Request.Form. Like:
+                // - InvalidOperationException: Request not a form POST or similar
+                // - InvalidDataException: Form body without a content-type or similar
+                // - ConnectionResetException: More than 100 active connections or similar
             }
 
             return null;
