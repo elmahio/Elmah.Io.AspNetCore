@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[3.8.83-pre,4)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[3.8.86,4)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="2.2.0" />
   </ItemGroup>
 
