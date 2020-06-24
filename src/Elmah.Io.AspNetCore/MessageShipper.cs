@@ -25,7 +25,7 @@ namespace Elmah.Io.AspNetCore
                 Data = exception?.ToDataList(),
                 Cookies = Cookies(context),
                 Form = Form(context),
-                Hostname = context.Request?.Host.Host,
+                Hostname = Hostname(context),
                 ServerVariables = ServerVariables(context),
                 StatusCode = StatusCode(exception, context),
                 Url = context.Request?.Path.Value,
@@ -72,6 +72,17 @@ namespace Elmah.Io.AspNetCore
                     // If there's a Exception while generating the error page, re-throw the original exception.
                 }
             });
+        }
+
+        private static string Hostname(HttpContext context)
+        {
+            var machineName = Environment.MachineName;
+            if (!string.IsNullOrWhiteSpace(machineName)) return machineName;
+
+            machineName = Environment.GetEnvironmentVariable("COMPUTERNAME");
+            if (!string.IsNullOrWhiteSpace(machineName)) return machineName;
+
+            return context.Request?.Host.Host;
         }
 
         private static string Source(Exception baseException)
