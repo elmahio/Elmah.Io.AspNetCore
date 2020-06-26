@@ -23,6 +23,8 @@
   <ItemGroup>
     <PackageReference Include="Elmah.Io.Client" Version="[3.8.86,4)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="2.2.0" />
+    <!-- Enable SourceLink -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 
 </Project>
