@@ -8,6 +8,7 @@
     <PackageId>Elmah.Io.AspNetCore</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
     <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://elmah.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -29,6 +30,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />
     <!-- Enable SourceLink -->
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="images\icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
