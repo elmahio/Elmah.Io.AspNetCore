@@ -13,7 +13,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         /// Add a health check publisher elmah.io.
         /// </summary>
         /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
-        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns>
         [Obsolete("Use the overload accepting ElmahIoPublisherOptions.")]
         public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder, string apiKey, Guid logId, string application = null)
         {
@@ -30,7 +30,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         /// </summary>
         /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
         /// <param name="options">Options used to configure the elmah.io health check publisher.</param>
-        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns>
         public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder, Action<ElmahIoPublisherOptions> options)
         {
             builder.AddElmahIoPublisher();
@@ -40,12 +40,10 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
         /// <summary>
         /// Add a health check publisher elmah.io.Calling this method requires you to configure elmah.io options manually like this:
-        /// 
         /// <code>services.Configure&lt;ElmahIoPublisherOptions&gt;(Configuration.GetSection("ElmahIo"));</code>
-        /// 
         /// </summary>
         /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>
-        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns></param>
+        /// <returns>The <see cref="IHealthChecksBuilder"/>.</returns>
         public static IHealthChecksBuilder AddElmahIoPublisher(this IHealthChecksBuilder builder)
         {
             builder.Services.AddSingleton<IHealthCheckPublisher, ElmahIoPublisher>();
