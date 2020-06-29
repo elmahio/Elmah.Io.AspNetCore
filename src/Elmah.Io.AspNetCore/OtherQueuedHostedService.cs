@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.AspNetCore
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class OtherQueuedHostedService : BackgroundService
     {
         private readonly IOtherBackgroundTaskQueue _taskQueue;
@@ -35,4 +36,5 @@ namespace Elmah.Io.AspNetCore
             return Task.CompletedTask;
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.AspNetCore
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class QueuedHostedService : BackgroundService
     {
         private readonly IBackgroundTaskQueue _taskQueue;
@@ -14,10 +15,9 @@ namespace Elmah.Io.AspNetCore
         {
             _taskQueue = taskQueue;
             this.otherBackgroundTaskQueue = otherBackgroundTaskQueue;
-        }        
+        }
 
-        protected async override Task ExecuteAsync(
-            CancellationToken cancellationToken)
+        protected async override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -35,4 +35,5 @@ namespace Elmah.Io.AspNetCore
             }
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

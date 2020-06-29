@@ -9,6 +9,9 @@ namespace Elmah.Io.AspNetCore
     /// </summary>
     public interface IExceptionFormatter
     {
+        /// <summary>
+        /// Format an exception to a string.
+        /// </summary>
         string Format(Exception exception);
     }
 }

@@ -6,6 +6,9 @@ using System.Net;
 
 namespace Elmah.Io.AspNetCore
 {
+    /// <summary>
+    /// Contain properties for configuring the elmah.io middleware for ASP.NET Core.
+    /// </summary>
     public class ElmahIoOptions
     {
         /// <summary>

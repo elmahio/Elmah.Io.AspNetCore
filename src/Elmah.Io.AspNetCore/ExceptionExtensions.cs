@@ -4,9 +4,11 @@ using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {
+    /// <summary>
+    /// Extension methods for logging to elmah.io manually.
+    /// </summary>
     public static class ExceptionExtensions
     {
-
         /// <summary>
         /// Ship an exception to elmah.io manually:
         /// 

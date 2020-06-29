@@ -7,6 +7,9 @@ namespace Elmah.Io.AspNetCore.ExceptionFormatters
     /// </summary>
     public class DefaultExceptionFormatter : IExceptionFormatter
     {
+        /// <summary>
+        /// Format an exception to a string using the ToString method.
+        /// </summary>
         public string Format(Exception exception)
         {
             return exception?.ToString();

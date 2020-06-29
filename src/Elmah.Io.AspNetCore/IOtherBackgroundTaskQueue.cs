@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.AspNetCore
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public interface IOtherBackgroundTaskQueue
     {
         void QueueBackgroundWorkItem(Task workItem);
@@ -31,4 +32,5 @@ namespace Elmah.Io.AspNetCore
             return _initiatedQueue.Take();
         }
     }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }

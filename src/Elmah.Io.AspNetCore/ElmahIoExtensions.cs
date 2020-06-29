@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Elmah.Io.AspNetCore
 {
+    /// <summary>
+    /// Extension methods to help install Elmah.Io.AspNetCore.
+    /// </summary>
     public static class ElmahIoExtensions
     {
         /// <summary>
@@ -32,7 +35,7 @@ namespace Elmah.Io.AspNetCore
         /// <summary>
         /// Add elmah.io without any options. Calling this method requires you to configure elmah.io options manually like this:
         /// 
-        /// <code>services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));</code>
+        /// <code>services.Configure&lt;ElmahIoOptions&gt;(Configuration.GetSection("ElmahIo"));</code>
         /// 
         /// </summary>
         /// <param name="services"></param>

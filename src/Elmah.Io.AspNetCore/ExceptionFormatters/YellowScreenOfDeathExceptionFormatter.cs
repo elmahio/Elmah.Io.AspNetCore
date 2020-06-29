@@ -9,6 +9,9 @@ namespace Elmah.Io.AspNetCore.ExceptionFormatters
     /// </summary>
     public class YellowScreenOfDeathExceptionFormatter : IExceptionFormatter
     {
+        /// <summary>
+        /// Format an exception to a Yellow Screen of Death like output.
+        /// </summary>
         public string Format(Exception exception)
         {
             if (exception == null) return null;
