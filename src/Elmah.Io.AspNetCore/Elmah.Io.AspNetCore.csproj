@@ -17,9 +17,6 @@
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <!--Will be replaced on AppVeyor to build number-->
     <Version>1.0.0</Version>
   </PropertyGroup>
@@ -28,8 +25,6 @@
     <PackageReference Include="Elmah.Io.Client" Version="[3.8.86,4)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />
-    <!-- Enable SourceLink -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
