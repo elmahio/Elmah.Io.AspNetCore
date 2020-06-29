@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Elmah.Io.AspNetCore.HealthChecks
 {
+    /// <summary>
+    /// Publishes ASP.NET Core health check results as elmah.io Heartbeats.
+    /// </summary>
     public class ElmahIoPublisher : IHealthCheckPublisher
     {
         internal static string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
@@ -21,13 +24,17 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         private readonly ElmahIoPublisherOptions options;
         private ElmahioAPI api;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public ElmahIoPublisher(ILogger<ElmahIoPublisher> logger, IOptions<ElmahIoPublisherOptions> options)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             this.logger = logger;
             this.options = options.Value;
         }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             try
             {

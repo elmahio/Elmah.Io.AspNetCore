@@ -4,6 +4,9 @@ using System;
 
 namespace Elmah.Io.AspNetCore.HealthChecks
 {
+    /// <summary>
+    /// Extension methods for installing the elmah.io health check publisher.
+    /// </summary>
     public static class ElmahIoHealthCheckBuilderExtensions
     {
         /// <summary>
@@ -38,7 +41,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         /// <summary>
         /// Add a health check publisher elmah.io.Calling this method requires you to configure elmah.io options manually like this:
         /// 
-        /// <code>services.Configure<ElmahIoPublisherOptions>(Configuration.GetSection("ElmahIo"));</code>
+        /// <code>services.Configure&lt;ElmahIoPublisherOptions&gt;(Configuration.GetSection("ElmahIo"));</code>
         /// 
         /// </summary>
         /// <param name="builder">The <see cref="IHealthChecksBuilder"/>.</param>

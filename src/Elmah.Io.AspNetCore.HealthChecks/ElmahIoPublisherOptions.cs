@@ -3,6 +3,9 @@ using System;
 
 namespace Elmah.Io.AspNetCore.HealthChecks
 {
+    /// <summary>
+    /// Contain properties for configuring the elmah.io health check publisher for ASP.NET Core.
+    /// </summary>
     public class ElmahIoPublisherOptions
     {
         /// <summary>
