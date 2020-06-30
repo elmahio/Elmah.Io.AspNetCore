@@ -11,9 +11,7 @@ namespace Elmah.Io.AspNetCore
     {
         /// <summary>
         /// Ship an exception to elmah.io manually:
-        /// 
         /// <code>ex.Ship(HttpContext);</code>
-        /// 
         /// </summary>
         /// <param name="exception"></param>
         /// <param name="context"></param>
