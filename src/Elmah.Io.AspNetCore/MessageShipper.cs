@@ -27,7 +27,7 @@ namespace Elmah.Io.AspNetCore
                 Hostname = Hostname(context),
                 ServerVariables = ServerVariables(context),
                 StatusCode = StatusCode(exception, context),
-                Url = context.Request?.Path.Value,
+                Url = Url(context),
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
                 Severity = Severity(exception, context),
@@ -71,6 +71,15 @@ namespace Elmah.Io.AspNetCore
                     // If there's a Exception while generating the error page, re-throw the original exception.
                 }
             });
+        }
+
+        private static string Url(HttpContext context)
+        {
+            if (context.Request == null) return null;
+            if (context.Request.Path.HasValue) return context.Request.Path.Value;
+            if (context.Request.PathBase.HasValue) return context.Request.PathBase.Value;
+
+            return null;
         }
 
         private static string Hostname(HttpContext context)
