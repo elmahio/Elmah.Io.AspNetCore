@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: Pack Elmah.Io.AspNetCore
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj /p:Version=3.11.${{ github.run_number }}-pre
+    - name: Pack Elmah.Io.AspNetCore.TagHelpers
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj /p:Version=3.11.${{ github.run_number }}-pre
+    - name: Pack Elmah.Io.AspNetCore.HealthChecks
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj /p:Version=3.11.${{ github.run_number }}-pre
