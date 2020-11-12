@@ -31,12 +31,12 @@ namespace Elmah.Io.AspNetCore31.Example
                 options.LogId = new Guid("LOG_ID");
 
                 // Optional application name
-                //options.Application = "ASP.NET Core 3.0 Application";
+                //options.Application = "ASP.NET Core 3.1 Application";
 
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
                 //{
-                //    msg.Version = "3.0.0";
+                //    msg.Version = "3.1.0";
                 //};
 
                 // Remove comment on the following line to log through a proxy (in this case Fiddler).
@@ -53,7 +53,7 @@ namespace Elmah.Io.AspNetCore31.Example
             //{
             //    o.OnMessage = msg =>
             //    {
-            //        msg.Version = "3.0.0";
+            //        msg.Version = "3.1.0";
             //    };
             //});
 

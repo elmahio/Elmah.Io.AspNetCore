@@ -38,7 +38,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                     // Get a callback on every heartbeat:
                     //options.OnHeartbeat = msg =>
                     //{
-                    //    msg.Version = "3.0.0";
+                    //    msg.Version = "3.1.0";
                     //};
                 });
             // Comment out the following if you want to configure the publisher from appsettings.json (remember to configure ElmahIoPublisherOptions manually as shown above):

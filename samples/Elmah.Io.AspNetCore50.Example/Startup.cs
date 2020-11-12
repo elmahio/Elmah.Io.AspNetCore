@@ -1,14 +1,11 @@
 using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace Elmah.Io.AspNetCore50.Example
 {
@@ -31,12 +28,12 @@ namespace Elmah.Io.AspNetCore50.Example
                 options.LogId = new Guid("LOG_ID");
 
                 // Optional application name
-                //options.Application = "ASP.NET Core 3.0 Application";
+                //options.Application = "ASP.NET Core 5.0 Application";
 
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
                 //{
-                //    msg.Version = "3.0.0";
+                //    msg.Version = "5.0.0";
                 //};
 
                 // Remove comment on the following line to log through a proxy (in this case Fiddler).
@@ -53,7 +50,7 @@ namespace Elmah.Io.AspNetCore50.Example
             //{
             //    o.OnMessage = msg =>
             //    {
-            //        msg.Version = "3.0.0";
+            //        msg.Version = "5.0.0";
             //    };
             //});
 
