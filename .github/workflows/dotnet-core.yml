@@ -13,27 +13,42 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core 2
+
+    - name: Setup .NET Core 2.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.1.x
-    - name: Setup .NET Core 3
+    - name: Setup .NET Core 3.1
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Setup .NET 5
+    - name: Setup .NET 5.0
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+
     - name: Install dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
+
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+
     - name: Pack Elmah.Io.AspNetCore
       run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj /p:Version=3.11.${{ github.run_number }}-pre
     - name: Pack Elmah.Io.AspNetCore.TagHelpers
       run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj /p:Version=3.11.${{ github.run_number }}-pre
     - name: Pack Elmah.Io.AspNetCore.HealthChecks
       run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj /p:Version=3.11.${{ github.run_number }}-pre
+      
+    - name: Push Elmah.Io.AspNetCore to nuget.org
+      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.3.11.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      if: ${{ github.event_name == 'push' }}
+    - name: Push Elmah.Io.AspNetCore.TagHelpers to nuget.org
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.3.11.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      if: ${{ github.event_name == 'push' }}
+    - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.3.11.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      if: ${{ github.event_name == 'push' }}
