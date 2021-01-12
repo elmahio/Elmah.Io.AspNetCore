@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E0D4A60F-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D8CA4CF5-0E50-45F6-945E-A899EDE8D03D}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
+		.github\workflows\dotnet-core.yml = .github\workflows\dotnet-core.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -32,9 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore21.Examp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore21.NetFrameworkExample", "samples\Elmah.Io.AspNetCore21.NetFrameworkExample\Elmah.Io.AspNetCore21.NetFrameworkExample.csproj", "{BA0596F4-4FC0-47A4-ABC2-E7B9A10398DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore31.Example", "samples\Elmah.Io.AspNetCore31.Example\Elmah.Io.AspNetCore31.Example.csproj", "{6AF05883-55D8-4952-94E8-A5BF00F393A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore31.Example", "samples\Elmah.Io.AspNetCore31.Example\Elmah.Io.AspNetCore31.Example.csproj", "{6AF05883-55D8-4952-94E8-A5BF00F393A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elmah.Io.AspNetCore50.Example", "samples\Elmah.Io.AspNetCore50.Example\Elmah.Io.AspNetCore50.Example.csproj", "{436CEBEF-B388-4E20-8847-F56D8F70F31F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elmah.Io.AspNetCore50.Example", "samples\Elmah.Io.AspNetCore50.Example\Elmah.Io.AspNetCore50.Example.csproj", "{436CEBEF-B388-4E20-8847-F56D8F70F31F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
