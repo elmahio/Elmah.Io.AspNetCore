@@ -51,6 +51,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                     Result = Result(report),
                     Reason = Reason(report),
                     Application = options.Application,
+                    Took = Took(report),
                 };
 
                 if (options.OnFilter != null && options.OnFilter(createHeartbeat))
@@ -75,6 +76,11 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 logger?.LogError(e, "Error during publishing health check status to elmah.io.");
                 throw;
             }
+        }
+
+        private long? Took(HealthReport report)
+        {
+            return (long?)report?.TotalDuration.TotalMilliseconds;
         }
 
         private string Reason(HealthReport report)
