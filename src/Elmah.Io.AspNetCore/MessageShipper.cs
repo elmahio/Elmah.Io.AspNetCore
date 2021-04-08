@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -171,7 +172,33 @@ namespace Elmah.Io.AspNetCore
 
         private static List<Item> ServerVariables(HttpContext httpContext)
         {
-            return httpContext.Request?.Headers?.Keys.Select(k => new Item(k, httpContext.Request.Headers[k])).ToList();
+            var serverVariables = new List<Item>();
+            serverVariables.AddRange(RequestHeaders(httpContext.Request));
+            serverVariables.AddRange(Features(httpContext.Features));
+            return serverVariables;
+        }
+
+        private static IEnumerable<Item> RequestHeaders(HttpRequest request)
+        {
+            return request?.Headers?.Keys.Select(k => new Item(k, request.Headers[k])).ToList();
+        }
+
+        private static IEnumerable<Item> Features(IFeatureCollection features)
+        {
+            var items = new List<Item>();
+            if (features == null) return items;
+
+            foreach (var property in features.GetType().GetProperties())
+            {
+                try
+                {
+                    var value = property.GetValue(features);
+                    if (value.IsPrimitiveOrString()) items.Add(new Item(property.Name, value.ToString()));
+                }
+                catch {}
+            }
+
+            return items;
         }
 
         private static List<Item> QueryString(HttpContext httpContext)
