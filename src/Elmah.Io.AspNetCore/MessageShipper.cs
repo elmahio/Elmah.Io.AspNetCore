@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
@@ -193,7 +194,7 @@ namespace Elmah.Io.AspNetCore
                 try
                 {
                     var value = property.GetValue(features);
-                    if (value.IsPrimitiveOrString()) items.Add(new Item(property.Name, value.ToString()));
+                    if (value.IsValidForItems()) items.Add(new Item(property.Name, value.ToString()));
                 }
                 catch {}
             }
