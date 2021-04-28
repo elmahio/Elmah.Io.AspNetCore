@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -17,9 +16,7 @@ namespace Elmah.Io.AspNetCore
         /// <param name="context"></param>
         public static void Ship(this Exception exception, HttpContext context)
         {
-            var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
-            var queue = (IBackgroundTaskQueue)context.RequestServices.GetService(typeof(IBackgroundTaskQueue));
-            MessageShipper.Ship(exception, exception.GetBaseException().Message, context, options.Value, queue);
+            ElmahIoApi.Log(exception, context);
         }
     }
 }

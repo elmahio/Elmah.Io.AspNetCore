@@ -72,5 +72,18 @@ namespace Elmah.Io.AspNetCore
         /// <code>WebProxy</code> property to create a new instance of <code>System.Net.WebProxy</code>.
         /// </summary>
         public IWebProxy WebProxy { get; set; }
+
+        /// <summary>
+        /// When set to true log messages with the minimum level specified in appsettings.json will be
+        /// included as breadcrumbs for any errors happening within the same request.
+        /// </summary>
+        public bool TreatLoggingAsBreadcrumbs { get; set; }
+
+        /// <summary>
+        /// In case you want to ignore specific breadcrumbs and/or log messages logged through
+        /// Microsoft.Extensions.Logging (when TreatLoggingAsBreadcrumbs is set to true) you can
+        /// ignore them using this filter function.
+        /// </summary>
+        public Func<Breadcrumb, bool> OnFilterBreadcrumb { get; set; }
     }
 }

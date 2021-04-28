@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Elmah.Io.Client.Models;
@@ -17,13 +18,15 @@ namespace Elmah.Io.AspNetCore
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
             var baseException = exception?.GetBaseException();
+            var severity = Severity(exception, context);
+            var utcNow = DateTime.UtcNow;
             var createMessage = new CreateMessage
             {
-                DateTime = DateTime.UtcNow,
+                DateTime = utcNow,
                 Detail = Detail(exception, options),
                 Type = baseException?.GetType().FullName,
                 Title = title,
-                Data = exception?.ToDataList(),
+                Data = exception.ToDataList(),
                 Cookies = Cookies(context),
                 Form = Form(context),
                 Hostname = Hostname(context),
@@ -32,9 +35,10 @@ namespace Elmah.Io.AspNetCore
                 Url = Url(context),
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
-                Severity = Severity(exception, context),
+                Severity = severity,
                 Source = Source(baseException),
                 Application = options.Application,
+                Breadcrumbs = Breadcrumbs(context, title, severity, utcNow)
             };
 
             TrySetUser(context, createMessage);
@@ -73,6 +77,18 @@ namespace Elmah.Io.AspNetCore
                     // If there's a Exception while generating the error page, re-throw the original exception.
                 }
             });
+        }
+
+        private static IList<Client.Models.Breadcrumb> Breadcrumbs(HttpContext context, string message, string severity, DateTime dateTime)
+        {
+            var feature = context?.Features?.Get<ElmahIoBreadcrumbFeature>();
+            if (feature?.Breadcrumbs?.Count > 0)
+            {
+                feature.Breadcrumbs.Add(new Breadcrumb(dateTime, severity, severity, message));
+                return feature.Breadcrumbs.OrderByDescending(l => l.DateTime).ToList();
+            }
+
+            return null;
         }
 
         private static string Url(HttpContext context)

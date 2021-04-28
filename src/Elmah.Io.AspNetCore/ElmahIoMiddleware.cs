@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -32,6 +35,8 @@ namespace Elmah.Io.AspNetCore
         {
             try
             {
+                context.Features.Set(new ElmahIoBreadcrumbFeature(_options));
+
                 await _next.Invoke(context);
                 if (ShoudLogStatusCode(context))
                 {

@@ -1,6 +1,8 @@
 ﻿using System;
+using Elmah.Io.AspNetCore.Breadcrumbs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -57,6 +59,8 @@ namespace Elmah.Io.AspNetCore
             services.AddHostedService<OtherQueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
             services.AddSingleton<IOtherBackgroundTaskQueue, OtherBackgroundTaskQueue>();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<ILoggerProvider, ElmahIoBreadcrumbProvider>();
             return services;
         }
     }

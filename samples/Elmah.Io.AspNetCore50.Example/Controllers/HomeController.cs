@@ -18,6 +18,12 @@ namespace Elmah.Io.AspNetCore50.Example.Controllers
 
         public IActionResult Index()
         {
+            // Logging can be used for breadcrumbs
+            //_logger.LogInformation("Requesting the frontpage");
+
+            // Breadcrumbs can also be added manually
+            //ElmahIoApi.AddBreadcrumb(new Elmah.Io.Client.Models.Breadcrumb(DateTime.UtcNow, message: "Requesting the frontpage"), HttpContext);
+
             throw new Exception("Do you know what happened to the neanderthals, Bernard? We ate them.");
         }
 
@@ -30,7 +36,11 @@ namespace Elmah.Io.AspNetCore50.Example.Controllers
             }
             catch (DivideByZeroException e)
             {
+                // Either use the Ship extension method
                 e.Ship(HttpContext);
+
+                // Or the Log method on ElmahIoApi
+                //ElmahIoApi.Log(e, HttpContext);
             }
 
             return View();

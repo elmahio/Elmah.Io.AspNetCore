@@ -27,6 +27,12 @@ namespace Elmah.Io.AspNetCore50.Example
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
 
+                // Use log messages logged through Microsoft.Extensions.Logging as breadcrumbs
+                //options.TreatLoggingAsBreadcrumbs = true;
+
+                // Filter out breadcrumbs you don't want (like some messages logged through Microsoft.Extensions.Logging)
+                //options.OnFilterBreadcrumb = breadcrumb => breadcrumb.Message == "A message we don't want as a breadcrumb";
+
                 // Optional application name
                 //options.Application = "ASP.NET Core 5.0 Application";
 
