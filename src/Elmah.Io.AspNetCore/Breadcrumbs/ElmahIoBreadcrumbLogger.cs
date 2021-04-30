@@ -38,7 +38,7 @@ namespace Elmah.Io.AspNetCore.Breadcrumbs
             if (string.IsNullOrWhiteSpace(title)) return;
 
             var feature = httpContextAccessor.HttpContext?.Features?.Get<ElmahIoBreadcrumbFeature>();
-            feature?.Add(new Client.Models.Breadcrumb(DateTime.UtcNow, LogLevelToSeverity(logLevel), "log", title));
+            feature?.Add(new Client.Models.Breadcrumb(DateTime.UtcNow, LogLevelToSeverity(logLevel), "Log", title));
         }
 
         private string LogLevelToSeverity(LogLevel logLevel)

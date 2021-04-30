@@ -22,7 +22,7 @@ namespace Elmah.Io.AspNetCore50.Example.Controllers
             //_logger.LogInformation("Requesting the frontpage");
 
             // Breadcrumbs can also be added manually
-            //ElmahIoApi.AddBreadcrumb(new Elmah.Io.Client.Models.Breadcrumb(DateTime.UtcNow, message: "Requesting the frontpage"), HttpContext);
+            //ElmahIoApi.AddBreadcrumb(new Elmah.Io.Client.Models.Breadcrumb(action: "Navigation", message: "Requesting the frontpage"), HttpContext);
 
             throw new Exception("Do you know what happened to the neanderthals, Bernard? We ate them.");
         }

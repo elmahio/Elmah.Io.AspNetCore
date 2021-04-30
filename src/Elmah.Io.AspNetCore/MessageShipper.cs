@@ -18,7 +18,6 @@ namespace Elmah.Io.AspNetCore
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
             var baseException = exception?.GetBaseException();
-            var severity = Severity(exception, context);
             var utcNow = DateTime.UtcNow;
             var createMessage = new CreateMessage
             {
@@ -35,10 +34,10 @@ namespace Elmah.Io.AspNetCore
                 Url = Url(context),
                 QueryString = QueryString(context),
                 Method = context.Request?.Method,
-                Severity = severity,
+                Severity = Severity(exception, context),
                 Source = Source(baseException),
                 Application = options.Application,
-                Breadcrumbs = Breadcrumbs(context, title, severity, utcNow)
+                Breadcrumbs = Breadcrumbs(context, utcNow)
             };
 
             TrySetUser(context, createMessage);
@@ -79,12 +78,19 @@ namespace Elmah.Io.AspNetCore
             });
         }
 
-        private static IList<Client.Models.Breadcrumb> Breadcrumbs(HttpContext context, string message, string severity, DateTime dateTime)
+        private static IList<Breadcrumb> Breadcrumbs(HttpContext context, DateTime utcNow)
         {
             var feature = context?.Features?.Get<ElmahIoBreadcrumbFeature>();
             if (feature?.Breadcrumbs?.Count > 0)
             {
-                feature.Breadcrumbs.Add(new Breadcrumb(dateTime, severity, severity, message));
+                // Set default values on properties not set
+                foreach (var breadcrumb in feature.Breadcrumbs)
+                {
+                    if (!breadcrumb.DateTime.HasValue) breadcrumb.DateTime = utcNow;
+                    if (string.IsNullOrWhiteSpace(breadcrumb.Severity)) breadcrumb.Severity = "Information";
+                    if (string.IsNullOrWhiteSpace(breadcrumb.Action)) breadcrumb.Action = "Log";
+                }
+
                 return feature.Breadcrumbs.OrderByDescending(l => l.DateTime).ToList();
             }
 
