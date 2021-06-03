@@ -91,7 +91,9 @@ namespace Elmah.Io.AspNetCore
                     if (string.IsNullOrWhiteSpace(breadcrumb.Action)) breadcrumb.Action = "Log";
                 }
 
-                return feature.Breadcrumbs.OrderByDescending(l => l.DateTime).ToList();
+                var breadcrumbs = feature.Breadcrumbs.OrderByDescending(l => l.DateTime).ToList();
+                feature.Breadcrumbs.Clear();
+                return breadcrumbs;
             }
 
             return null;
