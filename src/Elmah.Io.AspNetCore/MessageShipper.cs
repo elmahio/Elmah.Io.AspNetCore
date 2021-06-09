@@ -5,7 +5,6 @@ using System.Net.Http.Headers;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
-using Elmah.Io.Client.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 

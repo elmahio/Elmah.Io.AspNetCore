@@ -29,7 +29,7 @@ namespace Elmah.Io.AspNetCore
         /// </summary>
         /// <param name="breadcrumb"></param>
         /// <param name="context"></param>
-        public static void AddBreadcrumb(Client.Models.Breadcrumb breadcrumb, HttpContext context)
+        public static void AddBreadcrumb(Client.Breadcrumb breadcrumb, HttpContext context)
         {
             var feature = context?.Features?.Get<ElmahIoBreadcrumbFeature>();
             feature?.Add(breadcrumb);
