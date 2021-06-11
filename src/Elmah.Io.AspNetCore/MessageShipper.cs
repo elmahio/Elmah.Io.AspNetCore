@@ -48,7 +48,7 @@ namespace Elmah.Io.AspNetCore
 
             queue.QueueBackgroundWorkItem(async token =>
             {
-                var elmahioApi = (ElmahioAPI)ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
+                var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
                 {
                     WebProxy = options.WebProxy
                 });

@@ -21,7 +21,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
         private readonly ILogger<ElmahIoPublisher> logger;
         private readonly ElmahIoPublisherOptions options;
-        private ElmahioAPI api;
+        private IElmahioAPI api;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public ElmahIoPublisher(ILogger<ElmahIoPublisher> logger, IOptions<ElmahIoPublisherOptions> options)
@@ -39,7 +39,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             {
                 if (api == null)
                 {
-                    api = (ElmahioAPI)ElmahioAPI.Create(options.ApiKey, new ElmahIoOptions());
+                    api = ElmahioAPI.Create(options.ApiKey);
                     // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
                     api.HttpClient.Timeout = new TimeSpan(0, 0, 0, 30);
                     api.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)));
