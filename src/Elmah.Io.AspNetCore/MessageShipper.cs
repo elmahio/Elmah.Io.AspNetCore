@@ -13,6 +13,7 @@ namespace Elmah.Io.AspNetCore
     internal class MessageShipper
     {
         internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        internal static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
 
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
@@ -55,6 +56,7 @@ namespace Elmah.Io.AspNetCore
                 // Storing the message is behind a queue why the default timeout of 5 seconds isn't needed here.
                 elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 30);
                 elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)));
 
                 elmahioApi.Messages.OnMessage += (sender, args) =>
                 {
