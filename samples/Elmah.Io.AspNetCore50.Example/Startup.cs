@@ -1,4 +1,3 @@
-using Elmah.Io.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -47,12 +46,12 @@ namespace Elmah.Io.AspNetCore50.Example
             });
 
             // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.
-            //services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
+            //services.Configure<Elmah.Io.AspNetCore.ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
             // Still need to call this to register all dependencies
             //services.AddElmahIo();
 
             // If you configure ApiKey and LogId through appsettings.json, you can still add event handlers, configure handled status codes, etc.
-            //services.Configure<ElmahIoOptions>(o =>
+            //services.Configure<Elmah.Io.AspNetCore.ElmahIoOptions>(o =>
             //{
             //    o.OnMessage = msg =>
             //    {

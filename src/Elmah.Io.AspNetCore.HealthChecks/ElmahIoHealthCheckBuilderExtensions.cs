@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Elmah.Io.AspNetCore.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
 
-namespace Elmah.Io.AspNetCore.HealthChecks
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods for installing the elmah.io health check publisher.

@@ -1,10 +1,10 @@
 ﻿using System;
+using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Elmah.Io.AspNetCore
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to help install Elmah.Io.AspNetCore.

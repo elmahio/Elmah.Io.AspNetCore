@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Elmah.Io.AspNetCore;
+using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +33,9 @@ namespace Elmah.Io.AspNetCore21.NetFrameworkExample
             {
                 options.ApiKey = "API_KEY";
                 options.LogId = new Guid("LOG_ID");
-                options.Application = "ASP.NET Core 2.1 on .NET Framework";
+
+                // Optional application name
+                //options.Application = "ASP.NET Core 2.1 on .NET Framework";
 
                 // Add event handlers etc. like this:
                 //options.OnMessage = msg =>
@@ -49,10 +48,10 @@ namespace Elmah.Io.AspNetCore21.NetFrameworkExample
             });
 
             // ApiKey and LogId can be configured in appsettings.json as well, by calling the Configure-method instead of AddElmahIo.
-            //services.Configure<ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
+            //services.Configure<Elmah.Io.AspNetCore.ElmahIoOptions>(Configuration.GetSection("ElmahIo"));
 
             // If you configure ApiKey and LogId through appsettings.json, you can still add event handlers, configure handled status codes, etc.
-            //services.Configure<ElmahIoOptions>(o =>
+            //services.Configure<Elmah.Io.AspNetCore.ElmahIoOptions>(o =>
             //{
             //    o.OnMessage = msg =>
             //    {
