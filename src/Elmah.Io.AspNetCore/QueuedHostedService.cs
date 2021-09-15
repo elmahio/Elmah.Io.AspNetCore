@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,11 +11,13 @@ namespace Elmah.Io.AspNetCore
     {
         private readonly IBackgroundTaskQueue _taskQueue;
         private readonly IOtherBackgroundTaskQueue _otherBackgroundTaskQueue;
+        private readonly ILogger<QueuedHostedService> _logger;
 
-        public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue)
+        public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue, ILogger<QueuedHostedService> logger)
         {
             _taskQueue = taskQueue;
             _otherBackgroundTaskQueue = otherBackgroundTaskQueue;
+            _logger = logger;
         }
 
         protected async override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -28,10 +31,9 @@ namespace Elmah.Io.AspNetCore
                     var task = workItem(cancellationToken);
                     _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
+                    _logger.LogError(ex, "Error while queue work item");
                 }
             }
         }

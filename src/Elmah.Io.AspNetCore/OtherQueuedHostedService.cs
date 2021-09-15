@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,11 +10,13 @@ namespace Elmah.Io.AspNetCore
     public class OtherQueuedHostedService : BackgroundService
     {
         private readonly IOtherBackgroundTaskQueue _taskQueue;
+        private readonly ILogger<OtherQueuedHostedService> _logger;
         private Task _backgroundRunner;
 
-        public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue)
+        public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue, ILogger<OtherQueuedHostedService> logger)
         {
             _taskQueue = taskQueue;
+            _logger = logger;
         }
 
         protected override Task ExecuteAsync(
@@ -28,10 +31,9 @@ namespace Elmah.Io.AspNetCore
                         var task = _taskQueue.DequeueAsync(cancellationToken);
                         await task;
                     }
-#pragma warning disable CS0168 // Variable is declared but never used
                     catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                     {
+                        _logger.LogError(ex, "Error while dequeue and execute task");
                     }
                 }
             });
