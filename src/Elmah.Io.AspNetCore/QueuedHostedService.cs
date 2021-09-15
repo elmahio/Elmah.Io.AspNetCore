@@ -9,12 +9,12 @@ namespace Elmah.Io.AspNetCore
     public class QueuedHostedService : BackgroundService
     {
         private readonly IBackgroundTaskQueue _taskQueue;
-        private readonly IOtherBackgroundTaskQueue otherBackgroundTaskQueue;
+        private readonly IOtherBackgroundTaskQueue _otherBackgroundTaskQueue;
 
         public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue)
         {
             _taskQueue = taskQueue;
-            this.otherBackgroundTaskQueue = otherBackgroundTaskQueue;
+            _otherBackgroundTaskQueue = otherBackgroundTaskQueue;
         }
 
         protected async override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -26,7 +26,7 @@ namespace Elmah.Io.AspNetCore
                 try
                 {
                     var task = workItem(cancellationToken);
-                    otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
+                    _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
 #pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
