@@ -12,12 +12,14 @@ namespace Elmah.Io.AspNetCore
         private readonly IBackgroundTaskQueue _taskQueue;
         private readonly IOtherBackgroundTaskQueue _otherBackgroundTaskQueue;
         private readonly ILogger<QueuedHostedService> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
-        public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue, ILogger<QueuedHostedService> logger)
+        public QueuedHostedService(IBackgroundTaskQueue taskQueue, IOtherBackgroundTaskQueue otherBackgroundTaskQueue, ILogger<QueuedHostedService> logger, IServiceProvider serviceProvider)
         {
             _taskQueue = taskQueue;
             _otherBackgroundTaskQueue = otherBackgroundTaskQueue;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         protected async override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ namespace Elmah.Io.AspNetCore
 
                 try
                 {
-                    var task = workItem(cancellationToken);
+                    var task = workItem(_serviceProvider, cancellationToken);
                     _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
                 catch (Exception ex)

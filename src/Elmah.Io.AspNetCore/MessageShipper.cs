@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore
 {
     internal class MessageShipper
     {
-        internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
-        internal static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
-
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
             var baseException = exception?.GetBaseException();
@@ -47,34 +45,17 @@ namespace Elmah.Io.AspNetCore
                 return;
             }
 
-            queue.QueueBackgroundWorkItem(async token =>
+            queue.QueueBackgroundWorkItem(async (provider, token) =>
             {
-                var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
-                {
-                    WebProxy = options.WebProxy
-                });
-                // Storing the message is behind a queue why the default timeout of 5 seconds isn't needed here.
-                elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 30);
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)));
-
-                elmahioApi.Messages.OnMessage += (sender, args) =>
-                {
-                    options.OnMessage?.Invoke(args.Message);
-                };
-                elmahioApi.Messages.OnMessageFail += (sender, args) =>
-                {
-                    options.OnError?.Invoke(args.Message, args.Error);
-                };
-
                 try
                 {
-                    await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage);
+                    var innerOptions = provider.GetRequiredService<IOptions<ElmahIoOptions>>().Value;
+                    var elmahIoApi = provider.GetRequiredService<IElmahioAPI>();
+                    await elmahIoApi.Messages.CreateAndNotifyAsync(innerOptions.LogId, createMessage);
                 }
                 catch (Exception e)
                 {
                     options.OnError?.Invoke(createMessage, e);
-                    // If there's a Exception while generating the error page, re-throw the original exception.
                 }
             });
         }

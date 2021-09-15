@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +26,7 @@ namespace Elmah.Io.AspNetCore.Tests
             // Assert
             backgroundTaskQueueMock
                 .DidNotReceive()
-                .QueueBackgroundWorkItem(Arg.Any<Func<CancellationToken, Task>>());
+                .QueueBackgroundWorkItem(Arg.Any<Func<IServiceProvider, CancellationToken, Task>>());
         }
 
         [Test]
@@ -60,7 +58,7 @@ namespace Elmah.Io.AspNetCore.Tests
             // Assert
             backgroundTaskQueueMock
                 .Received()
-                .QueueBackgroundWorkItem(Arg.Any<Func<CancellationToken, Task>>());
+                .QueueBackgroundWorkItem(Arg.Any<Func<IServiceProvider, CancellationToken, Task>>());
             Assert.That(message != null);
             Assert.That(message.Application, Is.EqualTo("MyApp"));
             Assert.That(message.DateTime.HasValue && (DateTime.UtcNow - message.DateTime.Value).TotalMinutes <= 1);

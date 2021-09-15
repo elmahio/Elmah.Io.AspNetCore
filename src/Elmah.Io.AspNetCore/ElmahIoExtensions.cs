@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore.Breadcrumbs;
+using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -11,6 +15,9 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class ElmahIoExtensions
     {
+        internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        internal static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
+
         /// <summary>
         /// This method register the middleware with ASP.NET Core.
         /// </summary>
@@ -61,6 +68,30 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IOtherBackgroundTaskQueue, OtherBackgroundTaskQueue>();
             services.AddHttpContextAccessor();
             services.AddSingleton<ILoggerProvider, ElmahIoBreadcrumbProvider>();
+            services.AddSingleton(provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<ElmahIoOptions>>().Value;
+                options.ApiKey.AssertApiKey();
+                options.LogId.AssertLogId();
+                var elmahioApi = Elmah.Io.Client.ElmahioAPI.Create(options.ApiKey, new Elmah.Io.Client.ElmahIoOptions
+                {
+                    WebProxy = options.WebProxy
+                });
+                // Storing the message is behind a queue why the default timeout of 5 seconds isn't needed here.
+                elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 30);
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
+                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)));
+
+                elmahioApi.Messages.OnMessage += (sender, args) =>
+                {
+                    options.OnMessage?.Invoke(args.Message);
+                };
+                elmahioApi.Messages.OnMessageFail += (sender, args) =>
+                {
+                    options.OnError?.Invoke(args.Message, args.Error);
+                };
+                return elmahioApi;
+            });
             return services;
         }
     }
