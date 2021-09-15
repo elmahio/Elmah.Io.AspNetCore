@@ -10,6 +10,7 @@ namespace Elmah.Io.AspNetCore
     {
         private readonly IOtherBackgroundTaskQueue _taskQueue;
         private Task _backgroundRunner;
+
         public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue)
         {
             _taskQueue = taskQueue;
@@ -24,8 +25,8 @@ namespace Elmah.Io.AspNetCore
                 {
                     try
                     {
-                        var t = _taskQueue.DequeueAsync(cancellationToken);
-                        await t;
+                        var task = _taskQueue.DequeueAsync(cancellationToken);
+                        await task;
                     }
 #pragma warning disable CS0168 // Variable is declared but never used
                     catch (Exception ex)

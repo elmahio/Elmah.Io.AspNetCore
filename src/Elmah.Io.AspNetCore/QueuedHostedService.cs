@@ -21,13 +21,12 @@ namespace Elmah.Io.AspNetCore
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-
                 var workItem = await _taskQueue.DequeueAsync(cancellationToken);
 
                 try
                 {
-                    var blah = workItem(cancellationToken);
-                    otherBackgroundTaskQueue.QueueBackgroundWorkItem(blah);
+                    var task = workItem(cancellationToken);
+                    otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
 #pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
