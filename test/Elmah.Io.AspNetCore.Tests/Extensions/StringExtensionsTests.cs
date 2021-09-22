@@ -13,6 +13,7 @@ namespace Elmah.Io.AspNetCore.Tests.Extensions
             Assert.Throws<ArgumentException>(() => value.AssertApiKey());
         }
 
+        [Test]
         public void CanCalidateString()
         {
             var apiKey = "APIKEY";
