@@ -11,7 +11,6 @@ namespace Elmah.Io.AspNetCore
     {
         private readonly IOtherBackgroundTaskQueue _taskQueue;
         private readonly ILogger<OtherQueuedHostedService> _logger;
-        private Task _backgroundRunner;
 
         public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue, ILogger<OtherQueuedHostedService> logger)
         {
@@ -22,7 +21,7 @@ namespace Elmah.Io.AspNetCore
         protected override Task ExecuteAsync(
             CancellationToken cancellationToken)
         {
-            _backgroundRunner = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
