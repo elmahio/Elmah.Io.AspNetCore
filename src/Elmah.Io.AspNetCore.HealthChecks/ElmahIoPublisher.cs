@@ -39,10 +39,11 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             {
                 if (api == null)
                 {
-                    api = ElmahioAPI.Create(options.ApiKey);
-                    // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
-                    api.HttpClient.Timeout = new TimeSpan(0, 0, 0, 30);
-                    api.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)));
+                    api = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
+                    {
+                        Timeout = new TimeSpan(0, 0, 30), // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
+                        UserAgent = new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)).ToString(),
+                    });
                 }
 
                 var createHeartbeat = new CreateHeartbeat

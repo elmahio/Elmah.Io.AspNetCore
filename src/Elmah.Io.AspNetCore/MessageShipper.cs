@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Text;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
@@ -51,12 +52,10 @@ namespace Elmah.Io.AspNetCore
             {
                 var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
                 {
-                    WebProxy = options.WebProxy
+                    WebProxy = options.WebProxy,
+                    Timeout = new TimeSpan(0, 0, 30), // Storing the message is behind a queue why the default timeout of 5 seconds isn't needed here.
+                    UserAgent = UserAgent(),
                 });
-                // Storing the message is behind a queue why the default timeout of 5 seconds isn't needed here.
-                elmahioApi.HttpClient.Timeout = new TimeSpan(0, 0, 30);
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)));
-                elmahioApi.HttpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)));
 
                 elmahioApi.Messages.OnMessage += (sender, args) =>
                 {
@@ -77,6 +76,15 @@ namespace Elmah.Io.AspNetCore
                     // If there's a Exception while generating the error page, re-throw the original exception.
                 }
             });
+        }
+
+        private static string UserAgent()
+        {
+            return new StringBuilder()
+                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)).ToString())
+                .Append(" ")
+                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)).ToString())
+                .ToString();
         }
 
         private static IList<Breadcrumb> Breadcrumbs(HttpContext context, DateTime utcNow)
