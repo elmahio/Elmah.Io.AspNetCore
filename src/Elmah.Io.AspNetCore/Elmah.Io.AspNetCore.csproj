@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[4.1.30-pre,5)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[4.1.32-pre,5)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />
   </ItemGroup>
