@@ -37,6 +37,13 @@ namespace Elmah.Io.AspNetCore
                 }
             }
         }
+
+        public override async Task StopAsync(CancellationToken stoppingToken)
+        {
+            _logger.LogInformation("Queued Hosted Service is stopping.");
+
+            await base.StopAsync(stoppingToken);
+        }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
