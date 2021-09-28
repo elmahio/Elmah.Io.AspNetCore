@@ -15,6 +15,7 @@ namespace Elmah.Io.AspNetCore.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "script";
+            output.TagMode = TagMode.StartTagAndEndTag;
             output.Attributes.SetAttribute("src", $"https://cdn.jsdelivr.net/gh/elmahio/elmah.io.javascript@3.5.2/dist/elmahio.min.js?apiKey={Options.ApiKey}&logId={Options.LogId}");
         }
     }
