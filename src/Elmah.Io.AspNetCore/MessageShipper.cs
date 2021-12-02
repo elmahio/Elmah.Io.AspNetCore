@@ -48,6 +48,11 @@ namespace Elmah.Io.AspNetCore
                 return;
             }
 
+            // Use the OnMessage action on the options for ASP.NET Core directly. We normally use the OnMessage event on the Elmah.Io.Client package.
+            // We don't want to use that here, since that would defer the event to the message handler picking messages from the queue. When this
+            // happens, the HTTP context is no longer available. This would make it impossible to decorate all messages with information from the context.
+            options.OnMessage?.Invoke(createMessage);
+
             queue.QueueBackgroundWorkItem(async token =>
             {
                 var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
@@ -57,10 +62,6 @@ namespace Elmah.Io.AspNetCore
                     UserAgent = UserAgent(),
                 });
 
-                elmahioApi.Messages.OnMessage += (sender, args) =>
-                {
-                    options.OnMessage?.Invoke(args.Message);
-                };
                 elmahioApi.Messages.OnMessageFail += (sender, args) =>
                 {
                     options.OnError?.Invoke(args.Message, args.Error);
