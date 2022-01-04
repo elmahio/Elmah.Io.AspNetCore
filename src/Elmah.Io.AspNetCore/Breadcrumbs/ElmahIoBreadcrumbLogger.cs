@@ -46,19 +46,19 @@ namespace Elmah.Io.AspNetCore.Breadcrumbs
             switch (logLevel)
             {
                 case LogLevel.Critical:
-                    return Severity.Fatal.ToString();
+                    return nameof(Severity.Fatal);
                 case LogLevel.Debug:
-                    return Severity.Debug.ToString();
+                    return nameof(Severity.Debug);
                 case LogLevel.Error:
-                    return Severity.Error.ToString();
+                    return nameof(Severity.Error);
                 case LogLevel.Information:
-                    return Severity.Information.ToString();
+                    return nameof(Severity.Information);
                 case LogLevel.Trace:
-                    return Severity.Verbose.ToString();
+                    return nameof(Severity.Verbose);
                 case LogLevel.Warning:
-                    return Severity.Warning.ToString();
+                    return nameof(Severity.Warning);
                 default:
-                    return Severity.Information.ToString();
+                    return nameof(Severity.Information);
             }
         }
 
