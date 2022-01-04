@@ -32,18 +32,18 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
 
     - name: Pack Elmah.Io.AspNetCore
-      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj /p:Version=4.1.${{ github.run_number }}
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj /p:Version=4.2.${{ github.run_number }}-pre
     - name: Pack Elmah.Io.AspNetCore.TagHelpers
-      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj /p:Version=4.1.${{ github.run_number }}
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj /p:Version=4.2.${{ github.run_number }}-pre
     - name: Pack Elmah.Io.AspNetCore.HealthChecks
-      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj /p:Version=4.1.${{ github.run_number }}
+      run: dotnet pack --configuration Release src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj /p:Version=4.2.${{ github.run_number }}-pre
       
     - name: Push Elmah.Io.AspNetCore to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.4.1.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.4.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
     - name: Push Elmah.Io.AspNetCore.TagHelpers to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.4.1.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.4.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
     - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.4.1.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.4.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
