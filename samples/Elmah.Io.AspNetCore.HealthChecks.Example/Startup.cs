@@ -34,7 +34,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
                     // Get a callback on every heartbeat:
                     //options.OnHeartbeat = msg =>
                     //{
-                    //    msg.Version = "3.1.0";
+                    //    msg.Version = "6.0.0";
                     //};
                 });
             // Comment out the following if you want to configure the publisher from appsettings.json (remember to configure ElmahIoPublisherOptions manually as shown above):
@@ -42,9 +42,6 @@ namespace Elmah.Io.AspNetCore.HealthChecks.Example
             services.Configure<HealthCheckPublisherOptions>(options =>
             {
                 options.Period = TimeSpan.FromMinutes(5);
-                // If setting Period in ASP.NET Core 2.2, you will need reflection:
-                //var prop = options.GetType().GetField("_period", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                //prop.SetValue(options, TimeSpan.FromMinutes(5));
             });
 
         }
