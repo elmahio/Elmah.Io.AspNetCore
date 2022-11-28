@@ -1,11 +1,9 @@
 ﻿using Elmah.Io.AspNetCore;
-using Elmah.Io.AspNetCore50.Example.Models;
+using Elmah.Io.AspNetCore70.Example.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 
-namespace Elmah.Io.AspNetCore50.Example.Controllers
+namespace Elmah.Io.AspNetCore70.Example.Controllers
 {
     public class HomeController : Controller
     {
