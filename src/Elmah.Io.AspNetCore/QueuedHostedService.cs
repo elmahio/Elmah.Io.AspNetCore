@@ -24,16 +24,15 @@ namespace Elmah.Io.AspNetCore
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var workItem = await _taskQueue.DequeueAsync(cancellationToken);
-
                 try
                 {
+                    var workItem = await _taskQueue.DequeueAsync(cancellationToken);
                     var task = workItem(cancellationToken);
                     _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error while queue work item");
+                    _logger.LogError(ex, "Error while dequeue or queue work item");
                 }
             }
         }
