@@ -30,6 +30,10 @@ namespace Elmah.Io.AspNetCore
                     var task = workItem(cancellationToken);
                     _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
+                catch (OperationCanceledException oce)
+                {
+                    _logger.LogInformation(oce, "OperationCanceledException during dequeue or queue work item - the web app might be shutting down");
+                }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error while dequeue or queue work item");
