@@ -69,7 +69,7 @@ namespace Elmah.Io.AspNetCore
 
                 try
                 {
-                    await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage);
+                    await elmahioApi.Messages.CreateAndNotifyAsync(options.LogId, createMessage, token);
                 }
                 catch (Exception e)
                 {

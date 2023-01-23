@@ -63,7 +63,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
                 try
                 {
-                    await api.Heartbeats.CreateAsync(options.HeartbeatId, options.LogId.ToString(), createHeartbeat);
+                    await api.Heartbeats.CreateAsync(options.HeartbeatId, options.LogId.ToString(), createHeartbeat, cancellationToken);
                 }
                 catch (Exception inner)
                 {
