@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[4.4.56,5)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[5.0.58-pre,6)" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.0" />
   </ItemGroup>
