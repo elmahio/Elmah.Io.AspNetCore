@@ -65,10 +65,11 @@ namespace Elmah.Io.AspNetCore.Tests
             Assert.That(message.DateTime.HasValue && (DateTime.UtcNow - message.DateTime.Value).TotalMinutes <= 1);
             Assert.That(message.Type, Is.EqualTo("System.ArgumentException"));
             Assert.That(message.Title, Is.EqualTo("test"));
-            Assert.That(message.Data != null && message.Data.Count == 3);
+            Assert.That(message.Data != null && message.Data.Count == 4);
             Assert.That(message.Data.Any(d => d.Key == "ApplicationException.outerkey" && d.Value == "outervalue"));
             Assert.That(message.Data.Any(d => d.Key == "ArgumentException.innerkey" && d.Value == "innervalue"));
             Assert.That(message.Data.Any(d => d.Key == "X-ELMAHIO-EXCEPTIONINSPECTOR"));
+            Assert.That(message.Data.Any(d => d.Key == "X-ELMAHIO-FRAMEWORKDESCRIPTION"));
             Assert.That(message.Hostname, Is.EqualTo(Environment.MachineName));
             Assert.That(message.StatusCode, Is.EqualTo(500));
             Assert.That(message.Severity, Is.EqualTo("Error"));
