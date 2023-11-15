@@ -13,12 +13,12 @@ builder.Services.AddElmahIo(options =>
     //options.OnFilterBreadcrumb = breadcrumb => breadcrumb.Message == "A message we don't want as a breadcrumb";
 
     // Optional application name
-    //options.Application = "ASP.NET Core 7.0 Application";
+    //options.Application = "ASP.NET Core 8.0 Application";
 
     // Add event handlers etc. like this:
     //options.OnMessage = msg =>
     //{
-    //    msg.Version = "7.0.0";
+    //    msg.Version = "8.0.0";
     //};
 
     // Remove comment on the following line to log through a proxy (in this case Fiddler).
@@ -35,19 +35,19 @@ builder.Services.AddElmahIo(options =>
 //{
 //    o.OnMessage = msg =>
 //    {
-//        msg.Version = "7.0.0";
+//        msg.Version = "8.0.0";
 //    };
 //});
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -62,8 +62,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();
