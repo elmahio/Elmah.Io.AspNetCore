@@ -7,10 +7,10 @@ namespace Elmah.Io.AspNetCore.Tests.Extensions
 {
     public class ObjectExtensionsTests
     {
-        [Test] public void StringIsValid() => Assert.IsTrue("Hello".IsValidForItems());
-        [Test] public void IntIsValid() => Assert.IsTrue(42.IsValidForItems());
-        [Test] public void VersionIsValid() => Assert.IsTrue(new Version("1.0.0").IsValidForItems());
-        [Test] public void IPAddressIsValid() => Assert.IsTrue(IPAddress.Parse("127.0.0.1").IsValidForItems());
-        [Test] public void ObjectNotValid() => Assert.IsFalse(new ArgumentException().IsValidForItems());
+        [Test] public void StringIsValid() => Assert.That("Hello".IsValidForItems(), Is.True);
+        [Test] public void IntIsValid() => Assert.That(42.IsValidForItems(), Is.True);
+        [Test] public void VersionIsValid() => Assert.That(new Version("1.0.0").IsValidForItems(), Is.True);
+        [Test] public void IPAddressIsValid() => Assert.That(IPAddress.Parse("127.0.0.1").IsValidForItems(), Is.True);
+        [Test] public void ObjectNotValid() => Assert.That(new ArgumentException().IsValidForItems(), Is.False);
     }
 }
