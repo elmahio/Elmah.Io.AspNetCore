@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Http.Features;
 
 namespace Elmah.Io.AspNetCore
 {
-    internal class MessageShipper
+    internal static class MessageShipper
     {
-        internal static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
-        internal static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
+        private static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        private static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
 
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
@@ -106,7 +106,7 @@ namespace Elmah.Io.AspNetCore
                 return breadcrumbs;
             }
 
-            return null;
+            return new List<Breadcrumb>();
         }
 
         private static string Url(HttpContext context)
@@ -202,7 +202,7 @@ namespace Elmah.Io.AspNetCore
                 // - ConnectionResetException: More than 100 active connections or similar
             }
 
-            return null;
+            return new List<Item>();
         }
 
         private static List<Item> ServerVariables(HttpContext httpContext)
@@ -230,7 +230,11 @@ namespace Elmah.Io.AspNetCore
                     var value = property.GetValue(features);
                     if (value.IsValidForItems()) items.Add(new Item(property.Name, value.ToString()));
                 }
-                catch {}
+                catch
+                {
+                    // If getting a value from a property throws an exception, we cannot add it to the list of items.
+                    // The best option is to continue iterating over the list of features.
+                }
             }
 
             return items;

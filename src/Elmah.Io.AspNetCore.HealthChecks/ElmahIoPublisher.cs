@@ -17,7 +17,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
     /// </summary>
     public class ElmahIoPublisher : IHealthCheckPublisher
     {
-        internal static string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
+        private static string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
 
         private readonly ILogger<ElmahIoPublisher> logger;
         private readonly ElmahIoPublisherOptions options;

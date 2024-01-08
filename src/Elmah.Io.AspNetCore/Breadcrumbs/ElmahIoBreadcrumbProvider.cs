@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Elmah.Io.AspNetCore.Breadcrumbs
 {
     [ProviderAlias("ElmahIoBreadcrumbs")]
-    internal class ElmahIoBreadcrumbProvider : ILoggerProvider
+    internal sealed class ElmahIoBreadcrumbProvider : ILoggerProvider
     {
         private readonly ElmahIoOptions _options;
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -23,6 +24,7 @@ namespace Elmah.Io.AspNetCore.Breadcrumbs
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
         }
     }
 }

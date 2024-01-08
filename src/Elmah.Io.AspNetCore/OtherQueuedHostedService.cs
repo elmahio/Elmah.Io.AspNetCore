@@ -18,16 +18,15 @@ namespace Elmah.Io.AspNetCore
             _logger = logger;
         }
 
-        protected override Task ExecuteAsync(
-            CancellationToken cancellationToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Task.Run(async () =>
             {
-                while (!cancellationToken.IsCancellationRequested)
+                while (!stoppingToken.IsCancellationRequested)
                 {
                     try
                     {
-                        var task = _taskQueue.DequeueAsync(cancellationToken);
+                        var task = _taskQueue.DequeueAsync(stoppingToken);
                         await task;
                     }
                     catch (Exception ex)

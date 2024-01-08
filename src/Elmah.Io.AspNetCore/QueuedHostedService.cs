@@ -20,14 +20,14 @@ namespace Elmah.Io.AspNetCore
             _logger = logger;
         }
 
-        protected async override Task ExecuteAsync(CancellationToken cancellationToken)
+        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    var workItem = await _taskQueue.DequeueAsync(cancellationToken);
-                    var task = workItem(cancellationToken);
+                    var workItem = await _taskQueue.DequeueAsync(stoppingToken);
+                    var task = workItem(stoppingToken);
                     _otherBackgroundTaskQueue.QueueBackgroundWorkItem(task);
                 }
                 catch (OperationCanceledException oce)
@@ -41,11 +41,11 @@ namespace Elmah.Io.AspNetCore
             }
         }
 
-        public override async Task StopAsync(CancellationToken stoppingToken)
+        public override async Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Queued Hosted Service is stopping.");
 
-            await base.StopAsync(stoppingToken);
+            await base.StopAsync(cancellationToken);
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
