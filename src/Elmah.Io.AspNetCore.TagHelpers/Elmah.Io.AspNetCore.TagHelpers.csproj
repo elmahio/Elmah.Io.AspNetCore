@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Tag helpers to help integrate elmah.io client-side logging into ASP.NET Core.</Description>
     <Authors>elmah.io</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <AssemblyName>Elmah.Io.AspNetCore.TagHelpers</AssemblyName>
     <PackageId>Elmah.Io.AspNetCore.TagHelpers</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing;AspNetCore</PackageTags>
@@ -31,16 +31,20 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="images\icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Elmah.Io.AspNetCore\Elmah.Io.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>
