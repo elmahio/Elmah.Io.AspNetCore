@@ -48,10 +48,11 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
                 var createHeartbeat = new CreateHeartbeat
                 {
-                    Result = Result(report),
+                    Result = Result(report.Status),
                     Reason = Reason(report),
                     Application = options.Application,
                     Took = Took(report),
+                    Checks = Checks(report),
                 };
 
                 if (options.OnFilter != null && options.OnFilter(createHeartbeat))
@@ -76,6 +77,20 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 logger?.LogError(e, "Error during publishing health check status to elmah.io.");
                 throw;
             }
+        }
+
+        private List<Check> Checks(HealthReport report)
+        {
+            return report
+                .Entries?
+                .Select(entry => new Check
+                {
+                    Name = entry.Key,
+                    Result = Result(entry.Value.Status),
+                    Reason = entry.Value.Description,
+                    Took = (long?)entry.Value.Duration.TotalMilliseconds,
+                })
+                .ToList();
         }
 
         private long? Took(HealthReport report)
@@ -127,9 +142,9 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             }
         }
 
-        private string Result(HealthReport report)
+        private string Result(HealthStatus status)
         {
-            switch (report.Status)
+            switch (status)
             {
                 case HealthStatus.Degraded:
                     return "Degraded";
