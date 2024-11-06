@@ -32,6 +32,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new InvalidOperationException("No elmah.io dependencies have been registered. Make sure to call the AddElmahIo method in the ConfigureServices method in Startup.cs like this: services.AddElmahIo(...) or in the Program.cs file like this: builder.Services.AddElmahIo(...)");
             }
 
+            MessageShipper.CreateInstallation(app);
+
             return app.UseMiddleware<ElmahIoMiddleware>();
         }
 

@@ -6,15 +6,21 @@ using System.Text;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Elmah.Io.AspNetCore
 {
     internal static class MessageShipper
     {
-        private static string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
-        private static string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
+        private static readonly string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        private static readonly string _elmahIoClientAssemblyVersion = typeof(IElmahioAPI).Assembly.GetName().Version.ToString();
+        private static readonly string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
 
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
