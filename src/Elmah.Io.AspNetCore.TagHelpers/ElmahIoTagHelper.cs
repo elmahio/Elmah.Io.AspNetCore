@@ -3,14 +3,9 @@ using Microsoft.Extensions.Options;
 
 namespace Elmah.Io.AspNetCore.TagHelpers
 {
-    public class ElmahIoTagHelper : TagHelper
+    public class ElmahIoTagHelper(IOptions<ElmahIoOptions> options) : TagHelper
     {
-        public ElmahIoTagHelper(IOptions<ElmahIoOptions> options)
-        {
-            Options = options.Value;
-        }
-
-        public ElmahIoOptions Options { get; }
+        public ElmahIoOptions Options { get; } = options.Value;
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

@@ -6,16 +6,10 @@ using System;
 namespace Elmah.Io.AspNetCore.Breadcrumbs
 {
     [ProviderAlias("ElmahIoBreadcrumbs")]
-    internal sealed class ElmahIoBreadcrumbProvider : ILoggerProvider
+    internal sealed class ElmahIoBreadcrumbProvider(IOptions<ElmahIoOptions> options, IHttpContextAccessor httpContextAccessor) : ILoggerProvider
     {
-        private readonly ElmahIoOptions _options;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public ElmahIoBreadcrumbProvider(IOptions<ElmahIoOptions> options, IHttpContextAccessor httpContextAccessor)
-        {
-            _options = options.Value;
-            this.httpContextAccessor = httpContextAccessor;
-        }
+        private readonly ElmahIoOptions _options = options.Value;
+        private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
 
         public ILogger CreateLogger(string categoryName)
         {

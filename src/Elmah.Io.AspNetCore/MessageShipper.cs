@@ -79,16 +79,80 @@ namespace Elmah.Io.AspNetCore
             });
         }
 
+        public static void CreateInstallation(IApplicationBuilder app)
+        {
+            try
+            {
+                var options = app.ApplicationServices.GetService<IOptions<ElmahIoOptions>>().Value;
+                var logger = new LoggerInfo
+                {
+                    Type = "Elmah.Io.AspNetCore",
+                    Assemblies =
+                    [
+                        new AssemblyInfo
+                        {
+                            Name = "Elmah.Io.AspNetCore",
+                            Version = _assemblyVersion,
+                        },
+                        new AssemblyInfo
+                        {
+                            Name = "Elmah.Io.Client",
+                            Version = _elmahIoClientAssemblyVersion,
+                        }
+                    ],
+                    ConfigFiles = [],
+                };
+                var installation = new CreateInstallation
+                {
+                    Name = options.Application,
+                    Type = "aspnetcore",
+                    Loggers = [logger]
+                };
+
+                try
+                {
+                    var configuration = app.ApplicationServices.GetService<IConfiguration>();
+                    var elmahio = configuration.GetSection("ElmahIo").Get<ElmahIoOptions>();
+                    if (elmahio != null)
+                    {
+                        logger.ConfigFiles.Add(new ConfigFile
+                        {
+                            Name = "appsettings.json",
+                            Content = JsonConvert.SerializeObject(elmahio),
+                            ContentType = "application/json",
+                        });
+                    }
+                }
+                catch
+                {
+                    // There might be a problem with the config. Since we still reached this line the application
+                    // seem to start up. So, let us create the installation without the config file.
+                }
+
+                var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
+                {
+                    WebProxy = options.WebProxy,
+                    UserAgent = UserAgent(),
+                });
+
+                elmahioApi.Installations.Create(options.LogId.ToString(), installation);
+            }
+            catch
+            {
+                // We don't want to crash the entire application if the installation fails. Carry on.
+            }
+        }
+
         private static string UserAgent()
         {
             return new StringBuilder()
                 .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)).ToString())
-                .Append(" ")
+                .Append(' ')
                 .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)).ToString())
                 .ToString();
         }
 
-        private static IList<Breadcrumb> Breadcrumbs(HttpContext context, DateTime utcNow)
+        private static List<Breadcrumb> Breadcrumbs(HttpContext context, DateTime utcNow)
         {
             var feature = context?.Features?.Get<ElmahIoBreadcrumbFeature>();
             if (feature?.Breadcrumbs?.Count > 0)
@@ -106,7 +170,7 @@ namespace Elmah.Io.AspNetCore
                 return breadcrumbs;
             }
 
-            return new List<Breadcrumb>();
+            return [];
         }
 
         private static string Url(HttpContext context)
@@ -202,7 +266,7 @@ namespace Elmah.Io.AspNetCore
                 // - ConnectionResetException: More than 100 active connections or similar
             }
 
-            return new List<Item>();
+            return [];
         }
 
         private static List<Item> ServerVariables(HttpContext httpContext)
@@ -213,12 +277,12 @@ namespace Elmah.Io.AspNetCore
             return serverVariables;
         }
 
-        private static IEnumerable<Item> RequestHeaders(HttpRequest request)
+        private static List<Item> RequestHeaders(HttpRequest request)
         {
             return request?.Headers?.Keys.Select(k => new Item(k, request.Headers[k])).ToList();
         }
 
-        private static IEnumerable<Item> Features(IFeatureCollection features)
+        private static List<Item> Features(IFeatureCollection features)
         {
             var items = new List<Item>();
             if (features == null) return items;

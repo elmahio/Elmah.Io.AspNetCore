@@ -7,16 +7,10 @@ using System.Threading.Tasks;
 namespace Elmah.Io.AspNetCore
 {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-    public class OtherQueuedHostedService : BackgroundService
+    public class OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue, ILogger<OtherQueuedHostedService> logger) : BackgroundService
     {
-        private readonly IOtherBackgroundTaskQueue _taskQueue;
-        private readonly ILogger<OtherQueuedHostedService> _logger;
-
-        public OtherQueuedHostedService(IOtherBackgroundTaskQueue taskQueue, ILogger<OtherQueuedHostedService> logger)
-        {
-            _taskQueue = taskQueue;
-            _logger = logger;
-        }
+        private readonly IOtherBackgroundTaskQueue _taskQueue = taskQueue;
+        private readonly ILogger<OtherQueuedHostedService> _logger = logger;
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {

@@ -2,13 +2,17 @@
 using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extension methods to help install Elmah.Io.AspNetCore.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1510:Use ArgumentNullException throw helper", Justification = "Not available in Netstandard 2.0")]
     public static class ElmahIoExtensions
     {
         /// <summary>

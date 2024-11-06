@@ -8,7 +8,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace Microsoft.Extensions.DependencyInjection
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Exception handler for ASP.NET Core that logs exceptions to elmah.io. This can be used as an alternative to the elmah.io middleware.

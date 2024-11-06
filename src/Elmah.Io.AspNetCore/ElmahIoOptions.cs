@@ -17,7 +17,7 @@ namespace Elmah.Io.AspNetCore
         public ElmahIoOptions()
         {
             ExceptionFormatter = new DefaultExceptionFormatter();
-            HandledStatusCodesToLog = new List<int> { 404 };
+            HandledStatusCodesToLog = [404];
         }
 
         /// <summary>

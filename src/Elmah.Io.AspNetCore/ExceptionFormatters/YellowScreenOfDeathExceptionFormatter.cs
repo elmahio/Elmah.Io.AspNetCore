@@ -37,7 +37,7 @@ namespace Elmah.Io.AspNetCore.ExceptionFormatters
             return sb.ToString();
         }
 
-        private string ExceptionToString(Exception ex)
+        private static string ExceptionToString(Exception ex)
         {
             var description = new StringBuilder();
             description.AppendFormat("{0}: {1}", ex.GetType().FullName, ex.Message);

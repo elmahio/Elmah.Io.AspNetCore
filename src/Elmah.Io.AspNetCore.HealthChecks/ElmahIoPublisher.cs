@@ -17,7 +17,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
     /// </summary>
     public class ElmahIoPublisher : IHealthCheckPublisher
     {
-        private static string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
+        private static readonly string _assemblyVersion = typeof(ElmahIoPublisher).Assembly.GetName().Version.ToString();
 
         private readonly ILogger<ElmahIoPublisher> logger;
         private readonly ElmahIoPublisherOptions options;
@@ -32,19 +32,17 @@ namespace Elmah.Io.AspNetCore.HealthChecks
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S2139:Exceptions should be either logged or rethrown but not both", Justification = "<Pending>")]
         public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             try
             {
-                if (api == null)
+                api ??= ElmahioAPI.Create(options.ApiKey, new ElmahIoOptions
                 {
-                    api = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
-                    {
-                        Timeout = new TimeSpan(0, 0, 30), // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
-                        UserAgent = new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)).ToString(),
-                    });
-                }
+                    Timeout = new TimeSpan(0, 0, 30), // Override the default 5 seconds. Publishing health check results doesn't impact any HTTP request on the users website, why it is fine to wait.
+                    UserAgent = new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore.HealthChecks", _assemblyVersion)).ToString(),
+                });
 
                 var createHeartbeat = new CreateHeartbeat
                 {
@@ -79,7 +77,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             }
         }
 
-        private List<Check> Checks(HealthReport report)
+        private static List<Check> Checks(HealthReport report)
         {
             return report
                 .Entries?
@@ -93,7 +91,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
                 .ToList();
         }
 
-        private long? Took(HealthReport report)
+        private static long? Took(HealthReport report)
         {
             return (long?)report?.TotalDuration.TotalMilliseconds;
         }
@@ -128,7 +126,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             return sb.ToString();
         }
 
-        private void Generate(StringBuilder sb, List<KeyValuePair<string, HealthReportEntry>> checks, string category, int remainingCount)
+        private static void Generate(StringBuilder sb, List<KeyValuePair<string, HealthReportEntry>> checks, string category, int remainingCount)
         {
             if (checks.Any())
             {
@@ -142,17 +140,14 @@ namespace Elmah.Io.AspNetCore.HealthChecks
             }
         }
 
-        private string Result(HealthStatus status)
+        private static string Result(HealthStatus status)
         {
-            switch (status)
+            return status switch
             {
-                case HealthStatus.Degraded:
-                    return "Degraded";
-                case HealthStatus.Unhealthy:
-                    return "Unhealthy";
-                default:
-                    return "Healthy";
-            }
+                HealthStatus.Degraded => "Degraded",
+                HealthStatus.Unhealthy => "Unhealthy",
+                _ => "Healthy",
+            };
         }
     }
 }

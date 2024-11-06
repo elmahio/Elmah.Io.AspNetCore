@@ -3,18 +3,12 @@ using System.Linq;
 
 namespace Elmah.Io.AspNetCore.Breadcrumbs
 {
-    internal class ElmahIoBreadcrumbFeature
+    internal class ElmahIoBreadcrumbFeature(ElmahIoOptions options)
     {
         private const int MaximumCount = 10;
-        private readonly ElmahIoOptions options;
+        private readonly ElmahIoOptions options = options;
 
-        public List<Client.Breadcrumb> Breadcrumbs { get; }
-
-        public ElmahIoBreadcrumbFeature(ElmahIoOptions options)
-        {
-            this.options = options;
-            Breadcrumbs = new List<Client.Breadcrumb>();
-        }
+        public List<Client.Breadcrumb> Breadcrumbs { get; } = [];
 
         public void Add(Client.Breadcrumb breadcrumb)
         {

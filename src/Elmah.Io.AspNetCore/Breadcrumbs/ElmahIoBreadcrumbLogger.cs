@@ -7,16 +7,10 @@ using System.Linq;
 
 namespace Elmah.Io.AspNetCore.Breadcrumbs
 {
-    internal class ElmahIoBreadcrumbLogger : ILogger
+    internal class ElmahIoBreadcrumbLogger(ElmahIoOptions options, IHttpContextAccessor httpContextAccessor) : ILogger
     {
-        private readonly ElmahIoOptions options;
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public ElmahIoBreadcrumbLogger(ElmahIoOptions options, IHttpContextAccessor httpContextAccessor)
-        {
-            this.options = options;
-            this.httpContextAccessor = httpContextAccessor;
-        }
+        private readonly ElmahIoOptions options = options;
+        private readonly IHttpContextAccessor httpContextAccessor = httpContextAccessor;
 
         public IDisposable BeginScope<TState>(TState state)
         {
@@ -41,28 +35,21 @@ namespace Elmah.Io.AspNetCore.Breadcrumbs
             feature?.Add(new Client.Breadcrumb(DateTime.UtcNow, LogLevelToSeverity(logLevel), "Log", title));
         }
 
-        private string LogLevelToSeverity(LogLevel logLevel)
+        private static string LogLevelToSeverity(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Critical:
-                    return nameof(Severity.Fatal);
-                case LogLevel.Debug:
-                    return nameof(Severity.Debug);
-                case LogLevel.Error:
-                    return nameof(Severity.Error);
-                case LogLevel.Information:
-                    return nameof(Severity.Information);
-                case LogLevel.Trace:
-                    return nameof(Severity.Verbose);
-                case LogLevel.Warning:
-                    return nameof(Severity.Warning);
-                default:
-                    return nameof(Severity.Information);
-            }
+                LogLevel.Critical => nameof(Severity.Fatal),
+                LogLevel.Debug => nameof(Severity.Debug),
+                LogLevel.Error => nameof(Severity.Error),
+                LogLevel.Information => nameof(Severity.Information),
+                LogLevel.Trace => nameof(Severity.Verbose),
+                LogLevel.Warning => nameof(Severity.Warning),
+                _ => nameof(Severity.Information),
+            };
         }
 
-        internal string Title<TState>(TState state, Func<TState, Exception, string> formatter, Exception exception)
+        internal static string Title<TState>(TState state, Func<TState, Exception, string> formatter, Exception exception)
         {
             if (formatter != null)
             {
