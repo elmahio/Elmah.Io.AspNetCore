@@ -11,7 +11,7 @@ namespace Elmah.Io.AspNetCore.TagHelpers
         {
             output.TagName = "script";
             output.TagMode = TagMode.StartTagAndEndTag;
-            output.Attributes.SetAttribute("src", $"https://cdn.jsdelivr.net/gh/elmahio/elmah.io.javascript@4.1.0/dist/elmahio.min.js?apiKey={Options.ApiKey}&logId={Options.LogId}");
+            output.Attributes.SetAttribute("src", $"https://cdn.jsdelivr.net/gh/elmahio/elmah.io.javascript@4.1.1/dist/elmahio.min.js?apiKey={Options.ApiKey}&logId={Options.LogId}");
         }
     }
 }
