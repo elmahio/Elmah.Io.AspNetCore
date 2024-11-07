@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,10 +10,9 @@ using Elmah.Io.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -115,24 +115,22 @@ namespace Elmah.Io.AspNetCore
                     Loggers = [logger]
                 };
 
-                try
+                var location = typeof(MessageShipper).Assembly.Location;
+                var currentDirectory = Path.GetDirectoryName(location);
+                var appsettingsFilePath = Path.Combine(currentDirectory, "appsettings.json");
+                if (File.Exists(appsettingsFilePath))
                 {
-                    var configuration = app.ApplicationServices.GetService<IConfiguration>();
-                    var elmahio = configuration.GetSection("ElmahIo").Get<ElmahIoOptions>();
-                    if (elmahio != null)
+                    var appsettingsContent = File.ReadAllText(appsettingsFilePath);
+                    var appsettingsObject = JObject.Parse(appsettingsContent);
+                    if (appsettingsObject.TryGetValue("ElmahIo", out JToken elmahIoSection))
                     {
                         logger.ConfigFiles.Add(new ConfigFile
                         {
-                            Name = "appsettings.json",
-                            Content = JsonConvert.SerializeObject(elmahio),
-                            ContentType = "application/json",
+                            Name = Path.GetFileName(appsettingsFilePath),
+                            Content = new JObject { { "ElmahIo", elmahIoSection.DeepClone() } }.ToString(),
+                            ContentType = "application/json"
                         });
                     }
-                }
-                catch
-                {
-                    // There might be a problem with the config. Since we still reached this line the application
-                    // seem to start up. So, let us create the installation without the config file.
                 }
 
                 var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
