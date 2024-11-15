@@ -34,6 +34,12 @@ jobs:
           'src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj'
           'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
 
+    - name: Get logs from Docker container
+      run: |
+        container_id=$(docker ps -l -q)
+        docker cp $container_id:/tmp/action-log.txt action-log.txt || echo "Log file not found"
+        cat action-log.txt || echo "No log output available"
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
