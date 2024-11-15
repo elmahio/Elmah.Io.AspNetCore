@@ -23,6 +23,9 @@ jobs:
           8.0.x
           9.0.x
 
+    - name: Clean solution
+      run: dotnet clean
+
     - name: Install dependencies
       run: dotnet restore
 
