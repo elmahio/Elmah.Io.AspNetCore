@@ -35,6 +35,7 @@ jobs:
           'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
 
     - name: Get logs from Docker container
+      if: always() # Ensure this step runs even if the previous step fails
       run: |
         container_id=$(docker ps -l -q)
         docker cp $container_id:/tmp/action-log.txt action-log.txt || echo "Log file not found"
