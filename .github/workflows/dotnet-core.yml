@@ -34,13 +34,6 @@ jobs:
           'src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj'
           'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
 
-    - name: Get logs from Docker container
-      if: always() # Ensure this step runs even if the previous step fails
-      run: |
-        container_id=$(docker ps -l -q)
-        docker cp $container_id:/tmp/action-log.txt action-log.txt || echo "Log file not found"
-        cat action-log.txt || echo "No log output available"
-
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
@@ -64,12 +57,12 @@ jobs:
     - name: Validate Elmah.Io.AspNetCore.HealthChecks
       run: dotnet-validate package local src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.5.2.${{ github.run_number }}-pre.nupkg
 
-    - name: Push Elmah.Io.AspNetCore to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-      if: ${{ github.event_name == 'push' }}
-    - name: Push Elmah.Io.AspNetCore.TagHelpers to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-      if: ${{ github.event_name == 'push' }}
-    - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-      if: ${{ github.event_name == 'push' }}
+    # - name: Push Elmah.Io.AspNetCore to nuget.org
+    #   run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    #   if: ${{ github.event_name == 'push' }}
+    # - name: Push Elmah.Io.AspNetCore.TagHelpers to nuget.org
+    #   run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    #   if: ${{ github.event_name == 'push' }}
+    # - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
+    #   run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.5.2.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+    #   if: ${{ github.event_name == 'push' }}
