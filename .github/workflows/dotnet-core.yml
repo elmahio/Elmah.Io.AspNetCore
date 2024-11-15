@@ -28,10 +28,11 @@ jobs:
 
     - name: Check vulnerable NuGet packages
       uses: elmahio/github-check-vulnerable-nuget-packages-action@v2
-      projects: |
-        'src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj'
-        'src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj'
-        'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
+      with:
+        projects: |
+          'src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj'
+          'src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj'
+          'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
