@@ -26,6 +26,9 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
 
+    - name: Debug Restore
+      run: find . -name "project.assets.json" -print
+
     - name: Check vulnerable NuGet packages
       uses: elmahio/github-check-vulnerable-nuget-packages-action@v1
 
