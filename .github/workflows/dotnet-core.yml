@@ -23,17 +23,15 @@ jobs:
           8.0.x
           9.0.x
 
-    - name: Clean solution
-      run: dotnet clean
-
     - name: Install dependencies
       run: dotnet restore
 
-    - name: Debug Restore
-      run: find . -name "project.assets.json" -print
-
     - name: Check vulnerable NuGet packages
-      uses: elmahio/github-check-vulnerable-nuget-packages-action@v1
+      uses: elmahio/github-check-vulnerable-nuget-packages-action@v2
+      projects: |
+        'src/Elmah.Io.AspNetCore/Elmah.Io.AspNetCore.csproj'
+        'src/Elmah.Io.AspNetCore.HealthChecks/Elmah.Io.AspNetCore.HealthChecks.csproj'
+        'src/Elmah.Io.AspNetCore.TagHelpers/Elmah.Io.AspNetCore.TagHelpers.csproj'
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
