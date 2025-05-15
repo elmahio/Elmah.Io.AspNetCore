@@ -135,22 +135,10 @@ namespace Elmah.Io.AspNetCore
                     }
                 }
 
-                // elmah.io environment variables
-                if (TryGetEnvironmentVariable(["ElmahIo:LogId", "ElmahIo__LogId"], out string logIdEnv)) logger.EnvironmentVariables.Add(new Item("ElmahIo:LogId", logIdEnv));
-                if (TryGetEnvironmentVariable(["ElmahIo.ApiKey", "ElmahIo__ApiKey"], out string apiKeyEnv)) logger.EnvironmentVariables.Add(new Item("ElmahIo:ApiKey", apiKeyEnv));
-
-                // ASP.NET Core environment variables
-                if (TryGetEnvironmentVariable(["ASPNETCORE_ENVIRONMENT"], out string aspNetCoreEnvironment)) logger.EnvironmentVariables.Add(new Item("ASPNETCORE_ENVIRONMENT", aspNetCoreEnvironment));
-                if (TryGetEnvironmentVariable(["DOTNET_ENVIRONMENT"], out string dotNetEnvironment)) logger.EnvironmentVariables.Add(new Item("DOTNET_ENVIRONMENT", dotNetEnvironment));
-                if (TryGetEnvironmentVariable(["DOTNET_VERSION"], out string dotNetVersion)) logger.EnvironmentVariables.Add(new Item("DOTNET_VERSION", dotNetVersion));
-                if (TryGetEnvironmentVariable(["PROCESSOR_ARCHITECTURE"], out string processorArchitecture)) logger.EnvironmentVariables.Add(new Item("PROCESSOR_ARCHITECTURE", processorArchitecture));
-
-                // Azure environment variables
-                if (TryGetEnvironmentVariable(["WEBSITE_SITE_NAME"], out string websiteSiteName)) logger.EnvironmentVariables.Add(new Item("WEBSITE_SITE_NAME", websiteSiteName));
-                if (TryGetEnvironmentVariable(["WEBSITE_RESOURCE_GROUP"], out string websiteResourceGroup)) logger.EnvironmentVariables.Add(new Item("WEBSITE_RESOURCE_GROUP", websiteResourceGroup));
-                if (TryGetEnvironmentVariable(["WEBSITE_OWNER_NAME"], out string websiteOwnerName)) logger.EnvironmentVariables.Add(new Item("WEBSITE_OWNER_NAME", websiteOwnerName));
-                if (TryGetEnvironmentVariable(["REGION_NAME"], out string regionName)) logger.EnvironmentVariables.Add(new Item("REGION_NAME", regionName));
-                if (TryGetEnvironmentVariable(["WEBSITE_SKU"], out string websiteSku)) logger.EnvironmentVariables.Add(new Item("WEBSITE_SKU", websiteSku));
+                if (EnvironmentVariablesHelper.TryGetElmahIoAppSettingsEnvironmentVariables(out List<Item> elmahIoVariables)) elmahIoVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
+                if (EnvironmentVariablesHelper.TryGetAspNetCoreEnvironmentVariables(out List<Item> aspNetCoreVariables)) aspNetCoreVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
+                if (EnvironmentVariablesHelper.TryGetDotNetEnvironmentVariables(out List<Item> dotNetVariables)) dotNetVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
+                if (EnvironmentVariablesHelper.TryGetAzureEnvironmentVariables(out List<Item> azureVariables)) azureVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
 
                 var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
                 {
