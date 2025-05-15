@@ -156,22 +156,6 @@ namespace Elmah.Io.AspNetCore
             }
         }
 
-        private static bool TryGetEnvironmentVariable(string[] keys, out string outputValue)
-        {
-            foreach (var key in keys)
-            {
-                var value = Environment.GetEnvironmentVariable(key);
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    outputValue = value;
-                    return true;
-                }
-            }
-
-            outputValue = null;
-            return false;
-        }
-
         private static string UserAgent()
         {
             return new StringBuilder()
