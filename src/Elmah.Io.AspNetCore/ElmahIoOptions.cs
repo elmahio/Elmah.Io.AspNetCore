@@ -42,6 +42,12 @@ namespace Elmah.Io.AspNetCore
         public Action<CreateMessage> OnMessage { get; set; }
 
         /// <summary>
+        /// Register an action to be called before creating an installation. Use the OnInstallation
+        /// action to decorate installations with additional information related to your environment.
+        /// </summary>
+        public Action<CreateInstallation> OnInstallation { get; set; }
+
+        /// <summary>
         /// Register an action to be called if communicating with the elmah.io API fails.
         /// You can use this callback to log the error through Microsoft.Extensions.Logging
         /// or what ever logging framework you may use.
