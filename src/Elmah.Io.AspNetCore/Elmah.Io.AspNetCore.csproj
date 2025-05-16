@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[5.3.122-pre,6)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[5.3.123-pre,6)" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">

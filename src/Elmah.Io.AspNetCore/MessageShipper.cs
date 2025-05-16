@@ -135,10 +135,10 @@ namespace Elmah.Io.AspNetCore
                     }
                 }
 
-                if (EnvironmentVariablesHelper.TryGetElmahIoAppSettingsEnvironmentVariables(out List<Item> elmahIoVariables)) elmahIoVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
-                if (EnvironmentVariablesHelper.TryGetAspNetCoreEnvironmentVariables(out List<Item> aspNetCoreVariables)) aspNetCoreVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
-                if (EnvironmentVariablesHelper.TryGetDotNetEnvironmentVariables(out List<Item> dotNetVariables)) dotNetVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
-                if (EnvironmentVariablesHelper.TryGetAzureEnvironmentVariables(out List<Item> azureVariables)) azureVariables.ForEach(v => logger.EnvironmentVariables.Add(v));
+                EnvironmentVariablesHelper.GetElmahIoAppSettingsEnvironmentVariables().ForEach(v => logger.EnvironmentVariables.Add(v));
+                EnvironmentVariablesHelper.GetAspNetCoreEnvironmentVariables().ForEach(v => logger.EnvironmentVariables.Add(v));
+                EnvironmentVariablesHelper.GetDotNetEnvironmentVariables().ForEach(v => logger.EnvironmentVariables.Add(v));
+                EnvironmentVariablesHelper.GetAzureEnvironmentVariables().ForEach(v => logger.EnvironmentVariables.Add(v));
 
                 var elmahioApi = ElmahioAPI.Create(options.ApiKey, new Client.ElmahIoOptions
                 {
