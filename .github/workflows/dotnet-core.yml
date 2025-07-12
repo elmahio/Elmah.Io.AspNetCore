@@ -66,3 +66,16 @@ jobs:
     - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
       run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.5.3.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
+
+    - name: Refresh Bugster
+      shell: pwsh
+      env:
+        FUNCTION_APP_URL: ${{ secrets.FUNCTION_APP_URL }}
+      run: |
+        $repoName = ($env:GITHUB_REPOSITORY -split '/')[1]
+        $json = @{ repository = $repoName } | ConvertTo-Json -Compress
+        curl --fail-with-body -X POST `
+             -H "Content-Type: application/json" `
+             -d "$json" `
+             $env:FUNCTION_APP_URL
+      if: ${{ github.event_name == 'push' }}
