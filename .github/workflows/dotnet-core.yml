@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, apiv4 ]
   pull_request:
     branches: [ main ]
 
