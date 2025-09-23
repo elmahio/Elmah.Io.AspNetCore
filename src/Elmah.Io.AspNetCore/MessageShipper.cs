@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using Elmah.Io.AspNetCore.Breadcrumbs;
+﻿using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
 using Elmah.Io.Client;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Elmah.Io.AspNetCore
 {
@@ -123,13 +124,17 @@ namespace Elmah.Io.AspNetCore
                 if (File.Exists(appsettingsFilePath))
                 {
                     var appsettingsContent = File.ReadAllText(appsettingsFilePath);
-                    var appsettingsObject = JObject.Parse(appsettingsContent);
-                    if (appsettingsObject.TryGetValue("ElmahIo", out JToken elmahIoSection))
+                    var appsettingsObject = JsonNode.Parse(appsettingsContent, new JsonNodeOptions(), new JsonDocumentOptions
+                    {
+                        AllowTrailingCommas = true,
+                        CommentHandling = JsonCommentHandling.Skip,
+                    }).AsObject();
+                    if (appsettingsObject != null && appsettingsObject.TryGetPropertyValue("ElmahIo", out JsonNode elmahIoSection))
                     {
                         logger.ConfigFiles.Add(new ConfigFile
                         {
                             Name = Path.GetFileName(appsettingsFilePath),
-                            Content = new JObject { { "ElmahIo", elmahIoSection.DeepClone() } }.ToString(),
+                            Content = new JsonObject { ["ElmahIo"] = elmahIoSection.DeepClone() }.ToJsonString(),
                             ContentType = "application/json"
                         });
                     }

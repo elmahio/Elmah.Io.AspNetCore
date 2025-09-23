@@ -20,10 +20,8 @@ namespace Elmah.Io.AspNetCore
             if (context == null) throw new ArgumentNullException(nameof(context));
 
             var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
-            var queue = (IBackgroundTaskQueue)context.RequestServices.GetService(typeof(IBackgroundTaskQueue));
-
-            if (queue == null) throw new InvalidOperationException("No elmah.io dependencies have been registered. Make sure to call the AddElmahIo method in the ConfigureServices method in Startup.cs like this: services.AddElmahIo(...) or in the Program.cs file like this: builder.Services.AddElmahIo(...)");
-
+            var queue = (IBackgroundTaskQueue)context.RequestServices.GetService(typeof(IBackgroundTaskQueue))
+                ?? throw new InvalidOperationException("No elmah.io dependencies have been registered. Make sure to call the AddElmahIo method in the ConfigureServices method in Startup.cs like this: services.AddElmahIo(...) or in the Program.cs file like this: builder.Services.AddElmahIo(...)");
             MessageShipper.Ship(exception, exception.GetBaseException().Message, context, options.Value, queue);
         }
 

@@ -2,10 +2,7 @@
 using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

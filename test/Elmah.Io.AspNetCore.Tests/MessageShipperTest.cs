@@ -22,7 +22,7 @@ namespace Elmah.Io.AspNetCore.Tests
             };
 
             // Act
-            MessageShipper.Ship(new Exception(), "test", new DefaultHttpContext(), options, backgroundTaskQueueMock);
+            MessageShipper.Ship(new ApplicationException("test"), "test", new DefaultHttpContext(), options, backgroundTaskQueueMock);
 
             // Assert
             backgroundTaskQueueMock
