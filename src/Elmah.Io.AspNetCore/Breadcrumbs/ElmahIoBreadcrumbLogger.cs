@@ -26,7 +26,8 @@ namespace Elmah.Io.AspNetCore.Breadcrumbs
         {
             if (!IsEnabled(logLevel)) return;
 
-            if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+            ArgumentNullException.ThrowIfNull(formatter);
+
             var title = Title(state, formatter, exception);
             // It doesn't provide much value to show title-less breadcrumbs
             if (string.IsNullOrWhiteSpace(title)) return;

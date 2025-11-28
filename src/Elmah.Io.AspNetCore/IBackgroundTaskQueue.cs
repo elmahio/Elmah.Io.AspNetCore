@@ -1,11 +1,11 @@
-﻿using System;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Elmah.Io.AspNetCore
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public interface IBackgroundTaskQueue
     {
         void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem);
@@ -15,8 +15,8 @@ namespace Elmah.Io.AspNetCore
 
     public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
-        private readonly ConcurrentQueue<Func<CancellationToken, Task>> _workItems = new();
-        private readonly SemaphoreSlim _signal = new(0);
+        private readonly ConcurrentQueue<Func<CancellationToken, Task>> workItems = new();
+        private readonly SemaphoreSlim signal = new(0);
 
         public void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem)
         {
@@ -25,17 +25,17 @@ namespace Elmah.Io.AspNetCore
                 throw new ArgumentNullException(nameof(workItem));
             }
 
-            _workItems.Enqueue(workItem);
-            _signal.Release();
+            workItems.Enqueue(workItem);
+            signal.Release();
         }
 
         public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
         {
-            await _signal.WaitAsync(cancellationToken);
-            _workItems.TryDequeue(out var workItem);
+            await signal.WaitAsync(cancellationToken);
+            workItems.TryDequeue(out var workItem);
 
             return workItem;
         }
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

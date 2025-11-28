@@ -128,7 +128,7 @@ namespace Elmah.Io.AspNetCore.HealthChecks
 
         private static void Generate(StringBuilder sb, List<KeyValuePair<string, HealthReportEntry>> checks, string category, int remainingCount)
         {
-            if (checks.Any())
+            if (checks.Count != 0)
             {
                 sb.AppendLine($"{category} checks:");
                 foreach (var s in checks.OrderBy(u => u.Key))

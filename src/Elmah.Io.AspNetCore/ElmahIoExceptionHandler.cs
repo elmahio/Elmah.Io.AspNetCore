@@ -1,4 +1,4 @@
-﻿#if NET8_0_OR_GREATER
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 using Elmah.Io.AspNetCore;
 using Elmah.Io.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Diagnostics;
@@ -20,28 +20,22 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public class ElmahIoExceptionHandler : IExceptionHandler
     {
-        private readonly IBackgroundTaskQueue _queue;
-        private readonly ElmahIoOptions _options;
+        private readonly IBackgroundTaskQueue queue;
+        private readonly ElmahIoOptions options;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public ElmahIoExceptionHandler(IBackgroundTaskQueue queue, IOptions<ElmahIoOptions> options)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
-            _queue = queue;
-            _options = options.Value;
-            _options.ApiKey.AssertApiKey();
-            _options.LogId.AssertLogId();
+            this.queue = queue;
+            this.options = options.Value;
+            this.options.ApiKey.AssertApiKey();
+            this.options.LogId.AssertLogId();
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
-            MessageShipper.Ship(exception, exception?.GetBaseException().Message ?? "An error happened", httpContext, _options, _queue);
+            MessageShipper.Ship(exception, exception?.GetBaseException().Message ?? "An error happened", httpContext, options, queue);
             return false;
         }
     }
 }
-#endif
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

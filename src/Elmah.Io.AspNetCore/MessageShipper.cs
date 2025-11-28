@@ -19,9 +19,9 @@ namespace Elmah.Io.AspNetCore
 {
     internal static class MessageShipper
     {
-        private static readonly string _assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
-        private static readonly string _elmahIoClientAssemblyVersion = typeof(IElmahioAPI).Assembly.GetName().Version.ToString();
-        private static readonly string _aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
+        private static readonly string assemblyVersion = typeof(MessageShipper).Assembly.GetName().Version.ToString();
+        private static readonly string elmahIoClientAssemblyVersion = typeof(IElmahioAPI).Assembly.GetName().Version.ToString();
+        private static readonly string aspNetCoreAssemblyVersion = typeof(HttpContext).Assembly.GetName().Version.ToString();
 
         public static void Ship(Exception exception, string title, HttpContext context, ElmahIoOptions options, IBackgroundTaskQueue queue)
         {
@@ -99,12 +99,12 @@ namespace Elmah.Io.AspNetCore
                         new AssemblyInfo
                         {
                             Name = "Elmah.Io.AspNetCore",
-                            Version = _assemblyVersion,
+                            Version = assemblyVersion,
                         },
                         new AssemblyInfo
                         {
                             Name = "Elmah.Io.Client",
-                            Version = _elmahIoClientAssemblyVersion,
+                            Version = elmahIoClientAssemblyVersion,
                         }
                     ],
                     ConfigFiles = [],
@@ -164,9 +164,9 @@ namespace Elmah.Io.AspNetCore
         private static string UserAgent()
         {
             return new StringBuilder()
-                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", _assemblyVersion)).ToString())
+                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Elmah.Io.AspNetCore", assemblyVersion)).ToString())
                 .Append(' ')
-                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", _aspNetCoreAssemblyVersion)).ToString())
+                .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.AspNetCore.Http", aspNetCoreAssemblyVersion)).ToString())
                 .ToString();
         }
 

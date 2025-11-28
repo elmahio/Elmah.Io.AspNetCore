@@ -17,7 +17,7 @@ namespace Elmah.Io.AspNetCore
         /// <param name="context"></param>
         public static void Log(Exception exception, HttpContext context)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
+            ArgumentNullException.ThrowIfNull(context);
 
             var options = (IOptions<ElmahIoOptions>)context.RequestServices.GetService(typeof(IOptions<ElmahIoOptions>));
             var queue = (IBackgroundTaskQueue)context.RequestServices.GetService(typeof(IBackgroundTaskQueue))

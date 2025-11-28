@@ -3,11 +3,10 @@
   <PropertyGroup>
     <Description>An elmah.io provider for ASP.NET Core</Description>
     <Authors>elmah.io</Authors>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Elmah.Io.AspNetCore</AssemblyName>
     <PackageId>Elmah.Io.AspNetCore</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing</PackageTags>
-    <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://elmah.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</RepositoryUrl>
@@ -19,7 +18,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <LangVersion>12.0</LangVersion>
+    <LangVersion>13.0</LangVersion>
     <!-- SourceLink -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -31,20 +30,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[6.0.133-pre,7)" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Elmah.Io.Client" Version="[6.0.133-pre,7)" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

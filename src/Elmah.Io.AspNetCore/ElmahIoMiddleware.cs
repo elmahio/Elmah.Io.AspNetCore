@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Elmah.Io.AspNetCore.Breadcrumbs;
 using Elmah.Io.AspNetCore.Extensions;
@@ -14,19 +12,19 @@ namespace Elmah.Io.AspNetCore
     /// </summary>
     public class ElmahIoMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly IBackgroundTaskQueue _queue;
-        private readonly ElmahIoOptions _options;
+        private readonly RequestDelegate next;
+        private readonly IBackgroundTaskQueue queue;
+        private readonly ElmahIoOptions options;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public ElmahIoMiddleware(RequestDelegate next, IBackgroundTaskQueue queue, IOptions<ElmahIoOptions> options)
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
-            _next = next;
-            _queue = queue;
-            _options = options.Value;
-            _options.ApiKey.AssertApiKey();
-            _options.LogId.AssertLogId();
+            this.next = next;
+            this.queue = queue;
+            this.options = options.Value;
+            this.options.ApiKey.AssertApiKey();
+            this.options.LogId.AssertLogId();
         }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -35,25 +33,25 @@ namespace Elmah.Io.AspNetCore
         {
             try
             {
-                context.Features.Set(new ElmahIoBreadcrumbFeature(_options));
+                context.Features.Set(new ElmahIoBreadcrumbFeature(options));
 
-                await _next.Invoke(context);
+                await next.Invoke(context);
                 if (ShoudLogStatusCode(context))
                 {
-                    MessageShipper.Ship(null, "Unsuccessful status code in response", context, _options, _queue);
+                    MessageShipper.Ship(null, "Unsuccessful status code in response", context, options, queue);
                 }
             }
             catch (Exception exception)
             {
-                MessageShipper.Ship(exception, exception.GetBaseException().Message, context, _options, _queue);
+                MessageShipper.Ship(exception, exception.GetBaseException().Message, context, options, queue);
                 throw;
             }
         }
 
         private bool ShoudLogStatusCode(HttpContext context)
         {
-            return context.Response != null && _options.HandledStatusCodesToLog != null &&
-                   _options.HandledStatusCodesToLog.Contains(context.Response.StatusCode);
+            return context.Response != null && options.HandledStatusCodesToLog != null &&
+                   options.HandledStatusCodesToLog.Contains(context.Response.StatusCode);
         }
     }
 }

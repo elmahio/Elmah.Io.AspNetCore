@@ -3,11 +3,10 @@
   <PropertyGroup>
     <Description>A health check publisher for elmah.io</Description>
     <Authors>elmah.io</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Elmah.Io.AspNetCore.HealthChecks</AssemblyName>
     <PackageId>Elmah.Io.AspNetCore.HealthChecks</PackageId>
     <PackageTags>Error;Exception;Reporting;Management;Logging;ELMAH;Diagnostics;Tracing;diagnostics;healthchecks</PackageTags>
-    <PackageIconUrl>https://secure.gravatar.com/avatar/5c4cb3646528821117abde6d2d5ee22d?s=64</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://elmah.io</PackageProjectUrl>
     <RepositoryUrl>https://github.com/elmahio/Elmah.Io.AspNetCore</RepositoryUrl>
