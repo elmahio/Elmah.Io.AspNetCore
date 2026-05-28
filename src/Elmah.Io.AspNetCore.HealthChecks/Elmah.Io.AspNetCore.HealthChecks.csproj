@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[6.0.133-pre,7)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[6.0.138-pre,7)" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="2.2.0" />
   </ItemGroup>
 
