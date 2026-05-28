@@ -111,6 +111,11 @@ namespace Elmah.Io.AspNetCore
                     EnvironmentVariables = [],
                     Properties = [],
                 };
+
+                logger.Assemblies.TryAddAssemblyIfLoaded("Elmah.Io.AspNetCore.HealthChecks");
+                logger.Assemblies.TryAddAssemblyIfLoaded("Elmah.Io.AspNetCore.TagHelpers");
+                logger.Assemblies.TryAddExtensionAssembliesIfLoaded();
+
                 var installation = new CreateInstallation
                 {
                     Name = options.Application,
