@@ -10,7 +10,7 @@ namespace Elmah.Io.AspNetCore.Tests.Extensions
         public void CanValidateEmpty()
         {
             var g = Guid.Empty;
-            Assert.Throws<ArgumentException>(() => g.AssertLogId());
+            Assert.That((Action)(() => g.AssertLogId()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]

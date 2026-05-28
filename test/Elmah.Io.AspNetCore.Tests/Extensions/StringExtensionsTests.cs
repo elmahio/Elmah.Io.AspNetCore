@@ -10,7 +10,7 @@ namespace Elmah.Io.AspNetCore.Tests.Extensions
         [TestCase(null)]
         public void CanInvalidate(string value)
         {
-            Assert.Throws<ArgumentException>(() => value.AssertApiKey());
+            Assert.That((Action)(() => value.AssertApiKey()), Throws.TypeOf<ArgumentException>());
         }
 
         [Test]
