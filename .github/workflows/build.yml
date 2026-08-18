@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
 
     steps:
     - uses: actions/checkout@v7
@@ -56,14 +58,21 @@ jobs:
     - name: Validate Elmah.Io.AspNetCore.HealthChecks
       run: dotnet-validate package local src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.6.0.${{ github.run_number }}-pre.nupkg
 
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: nuget-login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+      if: ${{ github.event_name == 'push' }}
+
     - name: Push Elmah.Io.AspNetCore to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore/bin/Release/Elmah.Io.AspNetCore.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
     - name: Push Elmah.Io.AspNetCore.TagHelpers to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.TagHelpers/bin/Release/Elmah.Io.AspNetCore.TagHelpers.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
     - name: Push Elmah.Io.AspNetCore.HealthChecks to nuget.org
-      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.AspNetCore.HealthChecks/bin/Release/Elmah.Io.AspNetCore.HealthChecks.6.0.${{ github.run_number }}-pre.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
 
     # - name: Refresh Bugster
